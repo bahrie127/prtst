@@ -298,5 +298,6 @@ private void buttonPraktikumActionPerformed(java.awt.event.ActionEvent evt) {//G
         buttonSoalBs.setVisible(enable);
         buttonSoalMc.setVisible(enable);
         buttonStatistik.setVisible(enable);
+        buttonPraktikum.setVisible(enable);
     }
 }
