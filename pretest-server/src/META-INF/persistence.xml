@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="pretest-serverPU1" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>pretest.entity.JawabanBs</class>
+    <class>pretest.entity.JawabanMc</class>
+    <class>pretest.entity.Mahasiswa</class>
+    <class>pretest.entity.NilaiBs</class>
+    <class>pretest.entity.NilaiMc</class>
+    <class>pretest.entity.PertemuanPraktikum</class>
+    <class>pretest.entity.Praktikum</class>
+    <class>pretest.entity.SoalBs</class>
+    <class>pretest.entity.SoalMc</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/pretest-akakom"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="eclipselink.ddl-generation" value="create-tables"/>
+    </properties>
+  </persistence-unit>
+</persistence>
