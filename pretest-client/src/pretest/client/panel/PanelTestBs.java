@@ -164,7 +164,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private double nilai;
     private int bener = 0;
     private SelesaiListener listener;
-    private int s = 60, m = 1, h = 0;
+    private int s = 60, m = 59, h = 1;
 
     /**
      * methode
@@ -200,6 +200,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         TimeEntity te = t.timeFormat(s, m, h);
         labelWaktu.setText(te.getJam() + " : " + te.getMenit());
         if (h == -1) {
+            h--;
             nilai = ((double) bener / (double) jumlahSoal) * 100;
             nilaiBs = new NilaiBs();
             nilaiBs.setMahasiswa(mhs);
@@ -209,6 +210,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             listener.selesai(nilai);
         }
     }
+    
 
     /**
      * event
@@ -229,8 +231,9 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
             if (noSoal < jumlahSoal - 1) {
                 noSoal++;
-                textNo.setText(soalBsList.get(noSoal).getId() + "");
+                textNo.setText((noSoal+1)+"");
                 textSoal.setText(soalBsList.get(noSoal).getSoal());
+                buttonGroup.clearSelection();
             } else {
                 nilai = ((double) bener / (double) jumlahSoal) * 100;
                 nilaiBs = new NilaiBs();
@@ -240,6 +243,8 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 bsPretestService.save(nilaiBs);
                 listener.selesai(nilai);
             }
+            
+            
         } else {
             JOptionPane.showMessageDialog(this, "jawaban tidak boleh kosong");
         }
@@ -260,7 +265,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         soalBsList = bsPretestService.findSoalBss(pertemuanPraktikum);
         jumlahSoal = soalBsList.size();
         noSoal = 0;
-        textNo.setText(soalBsList.get(noSoal).getId() + "");
+        textNo.setText((noSoal+1)+"");
         textSoal.setText(soalBsList.get(noSoal).getSoal());
         ActionListener al = new ActionListener() {
 

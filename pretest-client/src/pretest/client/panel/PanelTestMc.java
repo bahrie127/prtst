@@ -156,7 +156,7 @@ public class PanelTestMc extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -213,7 +213,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private double nilai;
     private int benar = 0;
     private SelesaiListener listener;
-    private int s = 0, m = 0, h = 2;
+    private int s = 60, m = 59, h = 1;
 
     /**
      * methode
@@ -257,6 +257,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         TimeEntity te = t.timeFormat(s, m, h);
         labelWaktu.setText(te.getJam() + " : " + te.getMenit());
         if (h == -1) {
+            h--;
             nilai = ((double) benar / (double) jumlahSoal) * 100;
             nilaiMc = new NilaiMc();
             nilaiMc.setMahasiswa(mhs);
@@ -285,12 +286,13 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
             if (noSoal < jumlahSoal - 1) {
                 noSoal++;
-                textNo.setText(noSoal + "");
+                textNo.setText((noSoal+1)+"");
                 textSoal.setText(soalList.get(noSoal).getSoal());
                 radioA.setText(soalList.get(noSoal).getA());
                 radioB.setText(soalList.get(noSoal).getB());
                 radioC.setText(soalList.get(noSoal).getC());
                 radioD.setText(soalList.get(noSoal).getD());
+                buttonGroup.clearSelection();
             } else {
                 nilai = ((double) benar / (double) jumlahSoal) * 100;
                 nilaiMc = new NilaiMc();
@@ -321,7 +323,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         soalList = mcPretestService.findSoalMcs(pertemuanPraktikum);
         jumlahSoal = soalList.size();
         noSoal = 0;
-        textNo.setText(noSoal + "");
+        textNo.setText((noSoal+1)+"");
         textSoal.setText(soalList.get(noSoal).getSoal());
         radioA.setText(soalList.get(noSoal).getA());
         radioB.setText(soalList.get(noSoal).getB());

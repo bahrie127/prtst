@@ -31,8 +31,14 @@ public class PanelSelesai extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        labelNilai = new javax.swing.JLabel();
+        labelLulus = new javax.swing.JLabel();
 
         jLabel1.setText("terima kasih");
+
+        labelNilai.setText("Nilai Anda adalah : ");
+
+        labelLulus.setText("Anda dinyatakan ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -40,18 +46,44 @@ public class PanelSelesai extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(197, 197, 197)
-                .addComponent(jLabel1)
-                .addContainerGap(224, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelLulus)
+                    .addComponent(labelNilai)
+                    .addComponent(jLabel1))
+                .addContainerGap(175, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addComponent(jLabel1)
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelNilai)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelLulus)
+                .addContainerGap(141, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel labelLulus;
+    private javax.swing.JLabel labelNilai;
     // End of variables declaration//GEN-END:variables
+    private double nilai;
+
+    public double getNilai() {
+        return nilai;
+    }
+
+    public void setNilai(double nilai) {
+        this.nilai = nilai;
+        labelNilai.setText("Nilai Anda adalah "+nilai);
+        if(nilai>70){
+            labelLulus.setText("Anda dinyatakan Lulus");
+        }else{
+            labelLulus.setText("Anda dinyatakan Tidak Lulus");
+        }
+    }
+    
+    
 }

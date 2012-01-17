@@ -79,7 +79,7 @@ public class MainFrameClient extends javax.swing.JFrame {
         panelHeder.setLayout(panelHederLayout);
         panelHederLayout.setHorizontalGroup(
             panelHederLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 846, Short.MAX_VALUE)
+            .addGap(0, 1024, Short.MAX_VALUE)
         );
         panelHederLayout.setVerticalGroup(
             panelHederLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,14 +94,14 @@ public class MainFrameClient extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelHeder, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, 846, Short.MAX_VALUE)
+            .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, 1024, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelHeder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, 359, Short.MAX_VALUE))
+                .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, 365, Short.MAX_VALUE))
         );
 
         pack();
@@ -199,6 +199,7 @@ public class MainFrameClient extends javax.swing.JFrame {
 
             @Override
             public void selesai(double nilai) {
+                panelSelesai.setNilai(nilai);
                 showPanelSelesai();
             }
         };
