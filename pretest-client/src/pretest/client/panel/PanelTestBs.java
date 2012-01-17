@@ -10,13 +10,18 @@
  */
 package pretest.client.panel;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import pretest.client.frame.MainFrameClient;
 import pretest.client.util.SelesaiListener;
+import pretest.client.util.Time;
+import pretest.client.util.TimeEntity;
 import pretest.entity.JawabanBs;
 import pretest.entity.Mahasiswa;
 import pretest.entity.NilaiBs;
@@ -35,6 +40,8 @@ public class PanelTestBs extends javax.swing.JPanel {
     /** Creates new form PanelTestBs */
     public PanelTestBs() {
         initComponents();
+
+
     }
 
     /** This method is called from within the constructor to
@@ -55,7 +62,7 @@ public class PanelTestBs extends javax.swing.JPanel {
         radioBenar = new javax.swing.JRadioButton();
         radioSalah = new javax.swing.JRadioButton();
         buttonJawab = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        labelWaktu = new javax.swing.JLabel();
 
         jLabel1.setText("Nomor :");
 
@@ -78,7 +85,7 @@ public class PanelTestBs extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setText("XX : XX");
+        labelWaktu.setText("00 : 00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -100,8 +107,8 @@ public class PanelTestBs extends javax.swing.JPanel {
                                 .addComponent(radioBenar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(radioSalah)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 278, Short.MAX_VALUE)
-                        .addComponent(jLabel3)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE)
+                        .addComponent(labelWaktu)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -122,7 +129,7 @@ public class PanelTestBs extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonJawab)
-                    .addComponent(jLabel3))
+                    .addComponent(labelWaktu))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -139,8 +146,8 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JButton buttonJawab;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelWaktu;
     private javax.swing.JRadioButton radioBenar;
     private javax.swing.JRadioButton radioSalah;
     private javax.swing.JTextField textNo;
@@ -157,6 +164,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private double nilai;
     private int bener = 0;
     private SelesaiListener listener;
+    private int s = 60, m = 1, h = 0;
 
     /**
      * methode
@@ -176,6 +184,32 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         return "SALAH";
     }
 
+    public void setDuration() throws RemoteException {
+        //menghitung selisih waktu start dengan waktu sekarang
+        if (s == 0) {
+            s = 60;
+            m--;
+        } else {
+            s--;
+        }
+        if (m == 0) {
+            m = 60;
+            h--;
+        }
+        Time t = new Time();
+        TimeEntity te = t.timeFormat(s, m, h);
+        labelWaktu.setText(te.getJam() + " : " + te.getMenit());
+        if (h == -1) {
+            nilai = ((double) bener / (double) jumlahSoal) * 100;
+            nilaiBs = new NilaiBs();
+            nilaiBs.setMahasiswa(mhs);
+            nilaiBs.setPertemuanPraktikum(pertemuanPraktikum);
+            nilaiBs.setNilai(nilai);
+            bsPretestService.save(nilaiBs);
+            listener.selesai(nilai);
+        }
+    }
+
     /**
      * event
      * @throws RemoteException 
@@ -192,7 +226,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 jawabanBs.setJawab(Jawab.valueOf("B"));
             }
             bsPretestService.save(jawabanBs);
-            
+
             if (noSoal < jumlahSoal - 1) {
                 noSoal++;
                 textNo.setText(soalBsList.get(noSoal).getId() + "");
@@ -204,7 +238,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 nilaiBs.setPertemuanPraktikum(pertemuanPraktikum);
                 nilaiBs.setNilai(nilai);
                 bsPretestService.save(nilaiBs);
-                listener.selesai();
+                listener.selesai(nilai);
             }
         } else {
             JOptionPane.showMessageDialog(this, "jawaban tidak boleh kosong");
@@ -228,7 +262,19 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         noSoal = 0;
         textNo.setText(soalBsList.get(noSoal).getId() + "");
         textSoal.setText(soalBsList.get(noSoal).getSoal());
+        ActionListener al = new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    setDuration();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(PanelTestBs.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        };
+        new Timer(1000, al).start();
     }
 
     public SelesaiListener getListener() {

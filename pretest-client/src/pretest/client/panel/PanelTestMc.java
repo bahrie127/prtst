@@ -10,13 +10,18 @@
  */
 package pretest.client.panel;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import pretest.client.frame.MainFrameClient;
 import pretest.client.util.SelesaiListener;
+import pretest.client.util.Time;
+import pretest.client.util.TimeEntity;
 import pretest.entity.JawabanMc;
 import pretest.entity.Mahasiswa;
 import pretest.entity.NilaiMc;
@@ -53,7 +58,7 @@ public class PanelTestMc extends javax.swing.JPanel {
         buttonJawab = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        labelWaktu = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         radioA = new javax.swing.JRadioButton();
@@ -78,7 +83,7 @@ public class PanelTestMc extends javax.swing.JPanel {
 
         jLabel1.setText("Nomor :");
 
-        jLabel3.setText("XX : XX");
+        labelWaktu.setText("00 : 00");
 
         jLabel4.setText("A");
 
@@ -115,9 +120,9 @@ public class PanelTestMc extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(textNo, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonJawab, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 510, Short.MAX_VALUE)
-                                .addComponent(jLabel3))
+                                .addComponent(buttonJawab, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 508, Short.MAX_VALUE)
+                                .addComponent(labelWaktu))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 851, Short.MAX_VALUE))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
@@ -167,29 +172,29 @@ public class PanelTestMc extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonJawab)
-                    .addComponent(jLabel3))
+                    .addComponent(labelWaktu))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
 private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonJawabActionPerformed
-        try {
-            buttonJawabActionPerformed();
-        } catch (RemoteException ex) {
-            Logger.getLogger(PanelTestMc.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    try {
+        buttonJawabActionPerformed();
+    } catch (RemoteException ex) {
+        Logger.getLogger(PanelTestMc.class.getName()).log(Level.SEVERE, null, ex);
+    }
 }//GEN-LAST:event_buttonJawabActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JButton buttonJawab;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelWaktu;
     private javax.swing.JRadioButton radioA;
     private javax.swing.JRadioButton radioB;
     private javax.swing.JRadioButton radioC;
@@ -208,6 +213,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private double nilai;
     private int benar = 0;
     private SelesaiListener listener;
+    private int s = 0, m = 0, h = 2;
 
     /**
      * methode
@@ -229,10 +235,36 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         if (radioC.isSelected()) {
             return "C";
         }
-        if(radioD.isSelected()){
+        if (radioD.isSelected()) {
             return "D";
         }
         return null;
+    }
+
+    public void setDuration() throws RemoteException {
+        //menghitung selisih waktu start dengan waktu sekarang
+        if (s == 0) {
+            s = 60;
+            m--;
+        } else {
+            s--;
+        }
+        if (m == 0) {
+            m = 60;
+            h--;
+        }
+        Time t = new Time();
+        TimeEntity te = t.timeFormat(s, m, h);
+        labelWaktu.setText(te.getJam() + " : " + te.getMenit());
+        if (h == -1) {
+            nilai = ((double) benar / (double) jumlahSoal) * 100;
+            nilaiMc = new NilaiMc();
+            nilaiMc.setMahasiswa(mhs);
+            nilaiMc.setPertemuanPraktikum(pertemuanPraktikum);
+            nilaiMc.setNilai(nilai);
+            mcPretestService.save(nilaiMc);
+            listener.selesai(nilai);
+        }
     }
 
     /**
@@ -240,17 +272,17 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
      */
     private void buttonJawabActionPerformed() throws RemoteException {
         if (cekPilih()) {
-            jawabanMc=new JawabanMc();
+            jawabanMc = new JawabanMc();
             jawabanMc.setMahasiswa(mhs);
             jawabanMc.setSoalMc(soalList.get(noSoal));
             jawabanMc.setJawab(Jawab.S);
-            
-            if(soalList.get(noSoal).getKunciMc()==KunciMc.valueOf(jawaban())){
+
+            if (soalList.get(noSoal).getKunciMc() == KunciMc.valueOf(jawaban())) {
                 benar++;
                 jawabanMc.setJawab(Jawab.B);
             }
             mcPretestService.save(jawabanMc);
-            
+
             if (noSoal < jumlahSoal - 1) {
                 noSoal++;
                 textNo.setText(noSoal + "");
@@ -259,14 +291,14 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 radioB.setText(soalList.get(noSoal).getB());
                 radioC.setText(soalList.get(noSoal).getC());
                 radioD.setText(soalList.get(noSoal).getD());
-            }else{
-                nilai=((double) benar / (double) jumlahSoal) * 100;
-                nilaiMc=new NilaiMc();
+            } else {
+                nilai = ((double) benar / (double) jumlahSoal) * 100;
+                nilaiMc = new NilaiMc();
                 nilaiMc.setMahasiswa(mhs);
                 nilaiMc.setPertemuanPraktikum(pertemuanPraktikum);
                 nilaiMc.setNilai(nilai);
                 mcPretestService.save(nilaiMc);
-                listener.selesai();
+                listener.selesai(nilai);
             }
         } else {
             JOptionPane.showMessageDialog(this, "jawaban harus di isi");
@@ -295,6 +327,20 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         radioB.setText(soalList.get(noSoal).getB());
         radioC.setText(soalList.get(noSoal).getC());
         radioD.setText(soalList.get(noSoal).getD());
+
+        ActionListener al = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    setDuration();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(PanelTestMc.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        };
+        new Timer(1000, al).start();
     }
 
     public SelesaiListener getListener() {
@@ -304,6 +350,4 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     public void setListener(SelesaiListener listener) {
         this.listener = listener;
     }
-    
-    
 }

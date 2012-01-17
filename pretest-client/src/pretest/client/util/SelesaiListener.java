@@ -11,5 +11,5 @@ package pretest.client.util;
  * Twitter : @bahrie127
  */
 public interface SelesaiListener {
-    public void selesai();
+    public void selesai(double nilai);
 }
