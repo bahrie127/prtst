@@ -13,7 +13,9 @@ package pretest.client.panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -210,7 +212,36 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             listener.selesai(nilai);
         }
     }
-    
+
+    public List<SoalBs> setRandomSoal(List<SoalBs> soalBses) {
+        List<SoalBs> listAcak = new ArrayList<SoalBs>();
+        SoalBs sb = new SoalBs();
+        for (int i = 0; i < soalBses.size(); i++) {
+            listAcak.add(sb);
+        }
+        boolean ulang = false;
+        Random random = new Random();
+        int n = 0, m = 0;
+        int loop = 0;
+        int angka = 0;
+        do {
+            ulang = false;
+            n = random.nextInt(soalBses.size());
+            for (int c = 0; c < soalBses.size(); c++) {
+                if (soalBses.get(n).getId() == listAcak.get(c).getId()) {
+                    ulang = true;
+                    break;
+                }
+
+            }
+            if (ulang) {
+                continue;
+            }
+            listAcak.set(m, soalBses.get(n));
+            m++;
+        } while (m < soalBses.size());
+        return listAcak;
+    }
 
     /**
      * event
@@ -231,7 +262,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 
             if (noSoal < jumlahSoal - 1) {
                 noSoal++;
-                textNo.setText((noSoal+1)+"");
+                textNo.setText((noSoal + 1) + "");
                 textSoal.setText(soalBsList.get(noSoal).getSoal());
                 buttonGroup.clearSelection();
             } else {
@@ -243,8 +274,8 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 bsPretestService.save(nilaiBs);
                 listener.selesai(nilai);
             }
-            
-            
+
+
         } else {
             JOptionPane.showMessageDialog(this, "jawaban tidak boleh kosong");
         }
@@ -263,9 +294,10 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         this.mhs = mhs;
         bsPretestService = MainFrameClient.getBsPretestService();
         soalBsList = bsPretestService.findSoalBss(pertemuanPraktikum);
+        soalBsList = setRandomSoal(soalBsList);
         jumlahSoal = soalBsList.size();
         noSoal = 0;
-        textNo.setText((noSoal+1)+"");
+        textNo.setText((noSoal + 1) + "");
         textSoal.setText(soalBsList.get(noSoal).getSoal());
         ActionListener al = new ActionListener() {
 

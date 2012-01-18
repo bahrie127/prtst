@@ -13,7 +13,9 @@ package pretest.client.panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -268,6 +270,36 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
     }
 
+    public List<SoalMc> setRandomSoal(List<SoalMc> soalMces) {
+        List<SoalMc> listAcak = new ArrayList<SoalMc>();
+        SoalMc sb = new SoalMc();
+        for (int i = 0; i < soalMces.size(); i++) {
+            listAcak.add(sb);
+        }
+        boolean ulang = false;
+        Random random = new Random();
+        int n = 0, m = 0;
+        int loop = 0;
+        int angka = 0;
+        do {
+            ulang = false;
+            n = random.nextInt(soalMces.size());
+            for (int c = 0; c < soalMces.size(); c++) {
+                if (soalMces.get(n).getId() == listAcak.get(c).getId()) {
+                    ulang = true;
+                    break;
+                }
+
+            }
+            if (ulang) {
+                continue;
+            }
+            listAcak.set(m, soalMces.get(n));
+            m++;
+        } while (m < soalMces.size());
+        return listAcak;
+    }
+    
     /**
      * event
      */
@@ -321,6 +353,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         this.mhs = mhs;
         mcPretestService = MainFrameClient.getMcPretestService();
         soalList = mcPretestService.findSoalMcs(pertemuanPraktikum);
+        soalList=setRandomSoal(soalList);
         jumlahSoal = soalList.size();
         noSoal = 0;
         textNo.setText((noSoal+1)+"");
