@@ -32,8 +32,8 @@
                       <Component id="textNama" alignment="0" max="32767" attributes="1"/>
                       <Component id="comboPraktikum" alignment="0" max="32767" attributes="1"/>
                       <Component id="comboPertemuan" alignment="0" max="32767" attributes="1"/>
-                      <Component id="jButton1" alignment="0" pref="216" max="32767" attributes="1"/>
-                      <Component id="jButton2" alignment="0" max="32767" attributes="1"/>
+                      <Component id="buttonSoalBs" alignment="0" pref="216" max="32767" attributes="1"/>
+                      <Component id="buttonSoalMc" alignment="0" max="32767" attributes="1"/>
                   </Group>
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
               </Group>
@@ -65,9 +65,9 @@
                   <Component id="comboPertemuan" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <Component id="buttonSoalBs" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+              <Component id="buttonSoalMc" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -123,20 +123,20 @@
         <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="comboPertemuanItemStateChanged"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="buttonSoalBs">
       <Properties>
         <Property name="text" type="java.lang.String" value="SOAL BENAR SALAH"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSoalBsActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="buttonSoalMc">
       <Properties>
         <Property name="text" type="java.lang.String" value="SOAL MULTIPLECHOISE"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSoalMcActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
@@ -146,7 +146,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="XX : XX"/>
+        <Property name="text" type="java.lang.String" value="02 : 00"/>
       </Properties>
     </Component>
   </SubComponents>

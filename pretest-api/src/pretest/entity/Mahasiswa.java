@@ -62,4 +62,40 @@ public class Mahasiswa implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Mahasiswa other = (Mahasiswa) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
+        if ((this.nim == null) ? (other.nim != null) : !this.nim.equals(other.nim)) {
+            return false;
+        }
+        if ((this.nama == null) ? (other.nama != null) : !this.nama.equals(other.nama)) {
+            return false;
+        }
+        if ((this.password == null) ? (other.password != null) : !this.password.equals(other.password)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 53 * hash + (this.nim != null ? this.nim.hashCode() : 0);
+        hash = 53 * hash + (this.nama != null ? this.nama.hashCode() : 0);
+        hash = 53 * hash + (this.password != null ? this.password.hashCode() : 0);
+        return hash;
+    }
+    
+    
 }

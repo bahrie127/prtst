@@ -31,6 +31,7 @@ import pretest.entity.PertemuanPraktikum;
 import pretest.entity.SoalBs;
 import pretest.entity.enuum.Jawab;
 import pretest.entity.enuum.KunciBs;
+import pretest.entity.enuum.StatusNilai;
 import pretest.service.BsPretestService;
 
 /**
@@ -271,6 +272,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 nilaiBs.setMahasiswa(mhs);
                 nilaiBs.setPertemuanPraktikum(pertemuanPraktikum);
                 nilaiBs.setNilai(nilai);
+                nilaiBs.setStatusNilai(StatusNilai.Y);
                 bsPretestService.save(nilaiBs);
                 listener.selesai(nilai);
             }

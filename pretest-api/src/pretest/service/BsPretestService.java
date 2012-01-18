@@ -62,6 +62,10 @@ public interface BsPretestService extends Remote {
     public List<NilaiBs> findNilaiBss(PertemuanPraktikum pertemuanPraktikum) throws RemoteException;
 
     public List<NilaiBs> findNilaiBss(Mahasiswa mahasiswa) throws RemoteException;
+    
+    public NilaiBs findNilaiBs(Mahasiswa mahasiswa,PertemuanPraktikum pertemuanPraktikum) throws RemoteException;
+    
+    public List<NilaiBs> findNilaiBss(Mahasiswa mahasiswa,PertemuanPraktikum pertemuanPraktikum) throws RemoteException;
 
     public List<NilaiBs> findNilaiBss(NilaiBs nilaiBs) throws RemoteException;
 

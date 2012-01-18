@@ -67,4 +67,40 @@ public class JawabanBs implements Serializable {
     public void setSoalBs(SoalBs soalBs) {
         this.soalBs = soalBs;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final JawabanBs other = (JawabanBs) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
+        if (this.mahasiswa != other.mahasiswa && (this.mahasiswa == null || !this.mahasiswa.equals(other.mahasiswa))) {
+            return false;
+        }
+        if (this.soalBs != other.soalBs && (this.soalBs == null || !this.soalBs.equals(other.soalBs))) {
+            return false;
+        }
+        if (this.jawab != other.jawab) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 13 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 13 * hash + (this.mahasiswa != null ? this.mahasiswa.hashCode() : 0);
+        hash = 13 * hash + (this.soalBs != null ? this.soalBs.hashCode() : 0);
+        hash = 13 * hash + (this.jawab != null ? this.jawab.hashCode() : 0);
+        return hash;
+    }
+    
+    
 }

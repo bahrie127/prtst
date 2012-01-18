@@ -234,7 +234,7 @@ public class McPretestServiceImpl extends UnicastRemoteObject implements McPrete
 
     @Override
     public List<NilaiMc> findNilaiMcs() {
-        return em.createQuery("select n from NilaiMc n").getResultList();
+        return em.createQuery("select n from NilaiMc n order by n.pertemuanPraktikum.id").getResultList();
     }
 
     @Override
@@ -244,7 +244,17 @@ public class McPretestServiceImpl extends UnicastRemoteObject implements McPrete
 
     @Override
     public List<NilaiMc> findNilaiMcs(Mahasiswa mahasiswa) {
-        return em.createQuery("select n from NilaiMc n where n.mahasiswa=mahasiswa").setParameter("mahasiswa", mahasiswa).getResultList();
+        return em.createQuery("select n from NilaiMc n where n.mahasiswa=:mahasiswa").setParameter("mahasiswa", mahasiswa).getResultList();
+    }
+    
+    @Override
+    public NilaiMc findNilaiMc(Mahasiswa mahasiswa, PertemuanPraktikum pertemuanPraktikum) throws RemoteException {
+        return (NilaiMc) em.createQuery("select n from NilaiMc n where n.mahasiswa=:mahasiswa AND n.pertemuanPraktikum=:pertemuanPraktikum").setParameter("mahasiswa", mahasiswa).setParameter("pertemuanPraktikum", pertemuanPraktikum).getSingleResult();
+    }
+    
+    @Override
+    public List<NilaiMc> findNilaiMcs(Mahasiswa mahasiswa, PertemuanPraktikum pertemuanPraktikum) {
+        return em.createQuery("select n from NilaiMc n where n.mahasiswa=:mahasiswa AND n.pertemuanPraktikum=:pertemuanPraktikum").setParameter("mahasiswa", mahasiswa).setParameter("pertemuanPraktikum", pertemuanPraktikum).getResultList();
     }
 
     @Override
@@ -288,4 +298,6 @@ public class McPretestServiceImpl extends UnicastRemoteObject implements McPrete
     public Long countNilaiMcs() {
         return (Long) em.createQuery("select count(o) from NilaiMc o").getSingleResult();
     }
+
+    
 }

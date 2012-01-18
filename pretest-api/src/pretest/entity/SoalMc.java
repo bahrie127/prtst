@@ -106,4 +106,56 @@ public class SoalMc implements Serializable {
     public void setSoal(String soal) {
         this.soal = soal;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final SoalMc other = (SoalMc) obj;
+        if (this.id != other.id && (this.id == null || !this.id.equals(other.id))) {
+            return false;
+        }
+        if (this.pertemuanPraktikum != other.pertemuanPraktikum && (this.pertemuanPraktikum == null || !this.pertemuanPraktikum.equals(other.pertemuanPraktikum))) {
+            return false;
+        }
+        if ((this.soal == null) ? (other.soal != null) : !this.soal.equals(other.soal)) {
+            return false;
+        }
+        if ((this.a == null) ? (other.a != null) : !this.a.equals(other.a)) {
+            return false;
+        }
+        if ((this.b == null) ? (other.b != null) : !this.b.equals(other.b)) {
+            return false;
+        }
+        if ((this.c == null) ? (other.c != null) : !this.c.equals(other.c)) {
+            return false;
+        }
+        if ((this.d == null) ? (other.d != null) : !this.d.equals(other.d)) {
+            return false;
+        }
+        if (this.kunciMc != other.kunciMc) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + (this.id != null ? this.id.hashCode() : 0);
+        hash = 89 * hash + (this.pertemuanPraktikum != null ? this.pertemuanPraktikum.hashCode() : 0);
+        hash = 89 * hash + (this.soal != null ? this.soal.hashCode() : 0);
+        hash = 89 * hash + (this.a != null ? this.a.hashCode() : 0);
+        hash = 89 * hash + (this.b != null ? this.b.hashCode() : 0);
+        hash = 89 * hash + (this.c != null ? this.c.hashCode() : 0);
+        hash = 89 * hash + (this.d != null ? this.d.hashCode() : 0);
+        hash = 89 * hash + (this.kunciMc != null ? this.kunciMc.hashCode() : 0);
+        return hash;
+    }
+    
+    
 }

@@ -10,6 +10,16 @@
  */
 package pretest.server.ui.panel;
 
+import java.rmi.RemoteException;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import pretest.entity.NilaiBs;
+import pretest.entity.NilaiMc;
+import pretest.server.PretestServer;
+import pretest.server.impl.BsPretestServiceImpl;
+import pretest.server.impl.McPretestServiceImpl;
+import pretest.service.BsPretestService;
+
 /**
  *
  * @author bahrie
@@ -17,8 +27,17 @@ package pretest.server.ui.panel;
 public class PanelNilai extends javax.swing.JPanel {
 
     /** Creates new form PanelNilai */
-    public PanelNilai() {
+    public PanelNilai() throws RemoteException {
         initComponents();
+        bsPretestServiceImpl=new BsPretestServiceImpl();
+        mcPretestServiceImpl=new McPretestServiceImpl();
+        bsPretestServiceImpl.setEm(PretestServer.getEntityManager());
+        mcPretestServiceImpl.setEm(PretestServer.getEntityManager());
+        listNilaiBs=bsPretestServiceImpl.findNilaiBss();
+        listNilaiMc=mcPretestServiceImpl.findNilaiMcs();
+        isiTableBs();
+        isiTableMc();
+        
     }
 
     /** This method is called from within the constructor to
@@ -32,14 +51,14 @@ public class PanelNilai extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelBS = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tabelMC = new javax.swing.JTable();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nilai Benar Salah"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelBS.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -50,7 +69,7 @@ public class PanelNilai extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelBS);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -67,7 +86,7 @@ public class PanelNilai extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Nilai Pilihan Ganda"));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tabelMC.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -78,7 +97,7 @@ public class PanelNilai extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tabelMC);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -118,7 +137,43 @@ public class PanelNilai extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tabelBS;
+    private javax.swing.JTable tabelMC;
     // End of variables declaration//GEN-END:variables
+    private List<NilaiBs> listNilaiBs;
+    private List<NilaiMc> listNilaiMc;
+    private BsPretestServiceImpl bsPretestServiceImpl;
+    private McPretestServiceImpl mcPretestServiceImpl;
+    
+    private void isiTableBs() {
+        Object data[][] = new Object[listNilaiBs.size()][5];
+        int row = 0;
+        for (NilaiBs nb : listNilaiBs) {
+            data[row][0] = nb.getMahasiswa().getNim();
+            data[row][1] = nb.getMahasiswa().getNama();
+            data[row][2] = nb.getPertemuanPraktikum().getPraktikum().getNama();
+            data[row][3] = nb.getPertemuanPraktikum().getPertemuanKe();
+            data[row][4] = nb.getNilai();
+            row++;
+        }
+        String titile[] = {"Nim", "Nama", "Praktikum", "Ke","Nilai"};
+        tabelBS.setModel(new DefaultTableModel(data, titile));
+        jScrollPane1.setViewportView(tabelBS);
+    }
+    
+    private void isiTableMc() {
+        Object data[][] = new Object[listNilaiMc.size()][5];
+        int row = 0;
+        for (NilaiMc nm : listNilaiMc) {
+            data[row][0] = nm.getMahasiswa().getNim();
+            data[row][1] = nm.getMahasiswa().getNama();
+            data[row][2] = nm.getPertemuanPraktikum().getPraktikum().getNama();
+            data[row][3] = nm.getPertemuanPraktikum().getPertemuanKe();
+            data[row][4] = nm.getNilai();
+            row++;
+        }
+        String titile[] = {"Nim", "Nama", "Praktikum", "Ke","Nilai"};
+        tabelMC.setModel(new DefaultTableModel(data, titile));
+        jScrollPane2.setViewportView(tabelMC);
+    }
 }

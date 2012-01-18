@@ -228,22 +228,32 @@ public class BsPretestServiceImpl extends UnicastRemoteObject implements BsPrete
 
     @Override
     public NilaiBs findNilaiBs(Long id) {
-        return (NilaiBs) em.createQuery("select c from NilaiBs n where n.id=:id").setParameter("id", id).getSingleResult();
+        return (NilaiBs) em.createQuery("select n from NilaiBs n where n.id=:id").setParameter("id", id).getSingleResult();
     }
 
     @Override
     public List<NilaiBs> findNilaiBss() {
-        return em.createQuery("select n from NilaiBs n").getResultList();
+        return em.createQuery("select n from NilaiBs n order by n.pertemuanPraktikum.id").getResultList();
     }
 
     @Override
     public List<NilaiBs> findNilaiBss(PertemuanPraktikum pertemuanPraktikum) {
-        return em.createQuery("from NilaiBs n where n.pertemuanPraktikum=:pertemuanPraktikum order by n.id").setParameter("pertemuanPraktikum", pertemuanPraktikum).getResultList();
+        return em.createQuery("select n from NilaiBs n where n.pertemuanPraktikum=:pertemuanPraktikum order by n.id").setParameter("pertemuanPraktikum", pertemuanPraktikum).getResultList();
     }
 
     @Override
     public List<NilaiBs> findNilaiBss(Mahasiswa mahasiswa) {
-        return em.createQuery("select n from NilaiBs n where n.mahasiswa=mahasiswa").setParameter("mahasiswa", mahasiswa).getResultList();
+        return em.createQuery("select n from NilaiBs n where n.mahasiswa=:mahasiswa").setParameter("mahasiswa", mahasiswa).getResultList();
+    }
+    
+    @Override
+    public NilaiBs findNilaiBs(Mahasiswa mahasiswa, PertemuanPraktikum pertemuanPraktikum){
+        return (NilaiBs) em.createQuery("select n from NilaiBs n where n.mahasiswa=:mahasiswa and n.pertemuanPraktikum=:pertemuanPraktikum").setParameter("mahasiswa", mahasiswa).setParameter("pertemuanPraktikum", pertemuanPraktikum).getSingleResult();
+    }
+    
+    @Override
+    public List<NilaiBs> findNilaiBss(Mahasiswa mahasiswa, PertemuanPraktikum pertemuanPraktikum){
+        return  em.createQuery("select n from NilaiBs n where n.mahasiswa=:mahasiswa and n.pertemuanPraktikum=:pertemuanPraktikum").setParameter("mahasiswa", mahasiswa).setParameter("pertemuanPraktikum", pertemuanPraktikum).getResultList();
     }
 
     @Override
@@ -287,4 +297,6 @@ public class BsPretestServiceImpl extends UnicastRemoteObject implements BsPrete
     public Long countNilaiBss() {
         return (Long) em.createQuery("select count(o) from NilaiBs o").getSingleResult();
     }
+
+    
 }

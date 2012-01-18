@@ -14,12 +14,18 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import pretest.client.PretestClient;
 import pretest.client.frame.MainFrameClient;
 import pretest.client.util.PilihSoalListener;
 import pretest.entity.Mahasiswa;
+import pretest.entity.NilaiBs;
+import pretest.entity.NilaiMc;
 import pretest.entity.PertemuanPraktikum;
 import pretest.entity.Praktikum;
+import pretest.entity.enuum.StatusNilai;
+import pretest.service.BsPretestService;
+import pretest.service.McPretestService;
 import pretest.service.PraktikumService;
 
 /**
@@ -51,8 +57,8 @@ public class PanelPilihSoal extends javax.swing.JPanel {
         textNama = new javax.swing.JTextField();
         comboPraktikum = new javax.swing.JComboBox();
         comboPertemuan = new javax.swing.JComboBox();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        buttonSoalBs = new javax.swing.JButton();
+        buttonSoalMc = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
 
@@ -76,23 +82,23 @@ public class PanelPilihSoal extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setText("SOAL BENAR SALAH");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonSoalBs.setText("SOAL BENAR SALAH");
+        buttonSoalBs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                buttonSoalBsActionPerformed(evt);
             }
         });
 
-        jButton2.setText("SOAL MULTIPLECHOISE");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        buttonSoalMc.setText("SOAL MULTIPLECHOISE");
+        buttonSoalMc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                buttonSoalMcActionPerformed(evt);
             }
         });
 
         jLabel5.setText("Waktu");
 
-        jLabel6.setText("XX : XX");
+        jLabel6.setText("02 : 00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -113,8 +119,8 @@ public class PanelPilihSoal extends javax.swing.JPanel {
                         .addComponent(textNama)
                         .addComponent(comboPraktikum, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(comboPertemuan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(buttonSoalBs, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                        .addComponent(buttonSoalMc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel6))
                 .addContainerGap(175, Short.MAX_VALUE))
         );
@@ -138,9 +144,9 @@ public class PanelPilihSoal extends javax.swing.JPanel {
                     .addComponent(jLabel4)
                     .addComponent(comboPertemuan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(buttonSoalBs)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(buttonSoalMc)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
@@ -149,13 +155,21 @@ public class PanelPilihSoal extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        listener.pilihSoal("BS",pertemuanPraktikum,mhs);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void buttonSoalBsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSoalBsActionPerformed
+        try {
+            buttonSoalBsActionPerformed();
+        } catch (RemoteException ex) {
+            // Logger.getLogger(PanelPilihSoal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_buttonSoalBsActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        listener.pilihSoal("MC",pertemuanPraktikum,mhs);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void buttonSoalMcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSoalMcActionPerformed
+        try {
+            buttonSoalMcActionPerformed();
+        } catch (RemoteException ex) {
+            Logger.getLogger(PanelPilihSoal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_buttonSoalMcActionPerformed
 
 private void comboPraktikumItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboPraktikumItemStateChanged
     try {
@@ -169,10 +183,10 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
     comboPertemuanItemStateChanged();
 }//GEN-LAST:event_comboPertemuanItemStateChanged
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonSoalBs;
+    private javax.swing.JButton buttonSoalMc;
     private javax.swing.JComboBox comboPertemuan;
     private javax.swing.JComboBox comboPraktikum;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -183,12 +197,14 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
     private javax.swing.JTextField textNim;
     // End of variables declaration//GEN-END:variables
     PilihSoalListener listener;
-    Mahasiswa mhs;
+    private Mahasiswa mhs;
     private Praktikum praktikum;
     private PertemuanPraktikum pertemuanPraktikum;
     private List<PertemuanPraktikum> pertemuanPraktikums;
     private List<Praktikum> praktikums;
     private PraktikumService praktikumService;
+    private BsPretestService bsPretestService;
+    private McPretestService mcPretestService;
 
     private void loadComboPraktikum() throws RemoteException {
         praktikumService = MainFrameClient.getPraktikumService();
@@ -200,15 +216,38 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
 
     }
 
-    private void comboPraktikumItemStateChanged() throws RemoteException {
-        if(comboPraktikum.getSelectedIndex()>=0){
-        praktikum = praktikums.get(comboPraktikum.getSelectedIndex());
-        pertemuanPraktikums = praktikumService.findPraktikumPertemuans(praktikum);
-        comboPertemuan.removeAllItems();
-        for (PertemuanPraktikum pp : pertemuanPraktikums) {
-            comboPertemuan.addItem(pp.getPertemuanKe());
+    /**
+     * event event
+     * @throws RemoteException 
+     */
+    private void buttonSoalBsActionPerformed() throws RemoteException {
+        List<NilaiBs> nilaiBses = bsPretestService.findNilaiBss(mhs, pertemuanPraktikum);
+        
+        if (nilaiBses.isEmpty()) {
+            listener.pilihSoal("BS", pertemuanPraktikum, mhs);
+        } else {
+           JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
         }
-        comboPertemuan.setSelectedIndex(-1);
+    }
+
+    private void buttonSoalMcActionPerformed() throws RemoteException {
+        List<NilaiMc> nilaiMcs=mcPretestService.findNilaiMcs(mhs, pertemuanPraktikum);
+        if (nilaiMcs.isEmpty()) {
+            listener.pilihSoal("MC", pertemuanPraktikum, mhs);
+        } else {
+            JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
+        }
+    }
+
+    private void comboPraktikumItemStateChanged() throws RemoteException {
+        if (comboPraktikum.getSelectedIndex() >= 0) {
+            praktikum = praktikums.get(comboPraktikum.getSelectedIndex());
+            pertemuanPraktikums = praktikumService.findPraktikumPertemuans(praktikum);
+            comboPertemuan.removeAllItems();
+            for (PertemuanPraktikum pp : pertemuanPraktikums) {
+                comboPertemuan.addItem(pp.getPertemuanKe());
+            }
+            comboPertemuan.setSelectedIndex(-1);
         }
     }
 
@@ -236,5 +275,7 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
         textNim.setText(mhs.getNim());
         loadComboPraktikum();
         comboPraktikum.setSelectedIndex(-1);
+        bsPretestService = MainFrameClient.getBsPretestService();
+        mcPretestService = MainFrameClient.getMcPretestService();
     }
 }
