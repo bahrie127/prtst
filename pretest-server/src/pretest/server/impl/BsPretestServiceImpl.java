@@ -146,7 +146,7 @@ public class BsPretestServiceImpl extends UnicastRemoteObject implements BsPrete
 
     @Override
     public List<JawabanBs> findJawabanBss() {
-        return em.createQuery("select j from JawabanBs j").getResultList();
+        return em.createQuery("select j from JawabanBs j order by j.soalBs.id").getResultList();
     }
 
     @Override
@@ -239,6 +239,11 @@ public class BsPretestServiceImpl extends UnicastRemoteObject implements BsPrete
     @Override
     public List<NilaiBs> findNilaiBss(PertemuanPraktikum pertemuanPraktikum) {
         return em.createQuery("select n from NilaiBs n where n.pertemuanPraktikum=:pertemuanPraktikum order by n.id").setParameter("pertemuanPraktikum", pertemuanPraktikum).getResultList();
+    }
+    
+    @Override
+    public List<NilaiBs> findNilaiBsLulus(PertemuanPraktikum pertemuanPraktikum) {
+        return em.createQuery("select n from NilaiBs n where n.pertemuanPraktikum=:pertemuanPraktikum and n.nilai>=70 order by n.id").setParameter("pertemuanPraktikum", pertemuanPraktikum).getResultList();
     }
 
     @Override

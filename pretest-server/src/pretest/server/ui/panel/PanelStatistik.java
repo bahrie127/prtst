@@ -10,6 +10,18 @@
  */
 package pretest.server.ui.panel;
 
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import pretest.entity.JawabanBs;
+import pretest.entity.JawabanMc;
+import pretest.entity.enuum.Jawab;
+import pretest.server.PretestServer;
+import pretest.server.impl.BsPretestServiceImpl;
+import pretest.server.impl.McPretestServiceImpl;
+import pretest.server.util.StatistikJawaban;
+
 /**
  *
  * @author bahrie
@@ -17,8 +29,19 @@ package pretest.server.ui.panel;
 public class PanelStatistik extends javax.swing.JPanel {
 
     /** Creates new form PanelStatistik */
-    public PanelStatistik() {
+    public PanelStatistik() throws RemoteException {
         initComponents();
+        bsPretestServiceImpl = new BsPretestServiceImpl();
+        mcPretestServiceImpl = new McPretestServiceImpl();
+        bsPretestServiceImpl.setEm(PretestServer.getEntityManager());
+        mcPretestServiceImpl.setEm(PretestServer.getEntityManager());
+        
+        listJawabanBs=bsPretestServiceImpl.findJawabanBss();
+        listJawabanMc=mcPretestServiceImpl.findJawabanMcs();
+        listStatistikJawabanBs=statistikJawabanBs(listJawabanBs);
+        listStatistikJawabanMc=statistikJawabanMc(listJawabanMc);
+        isiTableStatistikBs();
+        isiTableStatistikMc();
     }
 
     /** This method is called from within the constructor to
@@ -32,14 +55,14 @@ public class PanelStatistik extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelStatistikBs = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableStatistikMc = new javax.swing.JTable();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Statistik Benar Salah"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelStatistikBs.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -50,7 +73,7 @@ public class PanelStatistik extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabelStatistikBs);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -67,7 +90,7 @@ public class PanelStatistik extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Statistik Pilihan Ganda"));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableStatistikMc.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -78,7 +101,7 @@ public class PanelStatistik extends javax.swing.JPanel {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tableStatistikMc);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -101,13 +124,11 @@ public class PanelStatistik extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 505, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 644, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -120,7 +141,129 @@ public class PanelStatistik extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tabelStatistikBs;
+    private javax.swing.JTable tableStatistikMc;
     // End of variables declaration//GEN-END:variables
+
+    private BsPretestServiceImpl bsPretestServiceImpl;
+    private McPretestServiceImpl mcPretestServiceImpl;
+    private List<JawabanBs> listJawabanBs;
+    private List<JawabanMc> listJawabanMc;
+    private List<StatistikJawaban> listStatistikJawabanBs;
+    private List<StatistikJawaban> listStatistikJawabanMc;
+    
+    private List<StatistikJawaban> statistikJawabanBs(List<JawabanBs> jawabanBses) {
+        List<StatistikJawaban> statistikJawabans = new ArrayList<StatistikJawaban>();
+        if (!jawabanBses.isEmpty()) {
+            int index = 0;
+            do {
+                int jumlahMhs=0;
+                int benar=0;
+                int persenBenar=0;
+                int persenSalah=0;
+                double nilaiTerRendah = 100;
+                Long idSoal = jawabanBses.get(index).getSoalBs().getId();
+                for (; index < jawabanBses.size(); index++) {
+                    if (jawabanBses.get(index).getSoalBs().getId() == idSoal) {
+                        jumlahMhs++;
+                        if(jawabanBses.get(index).getJawab()==Jawab.B){
+                            benar++;
+                        }
+                        
+                    } else {
+                        break;
+                    }
+                }
+                persenBenar=benar*100/jumlahMhs;
+                persenSalah=100-persenBenar;
+                StatistikJawaban sj=new StatistikJawaban();
+                sj.setIdSoal(idSoal);
+                sj.setJumlahMhs(jumlahMhs);
+                sj.setKe(jawabanBses.get(index-1).getSoalBs().getPertemuanPraktikum().getPertemuanKe()+"");
+                sj.setParktikum(jawabanBses.get(index-1).getSoalBs().getPertemuanPraktikum().getPraktikum().getNama());
+                sj.setPersenBenar(persenBenar);
+                sj.setPersenSalah(persenSalah);
+                statistikJawabans.add(sj);
+                index++;
+            } while (index < jawabanBses.size());
+        }
+
+        return statistikJawabans;
+    }
+    
+    private List<StatistikJawaban> statistikJawabanMc(List<JawabanMc> jawabanMcs) {
+        List<StatistikJawaban> statistikJawabans = new ArrayList<StatistikJawaban>();
+        if (!jawabanMcs.isEmpty()) {
+            int index = 0;
+            do {
+                int jumlahMhs=0;
+                int benar=0;
+                int persenBenar=0;
+                int persenSalah=0;
+                double nilaiTerRendah = 100;
+                Long idSoal = jawabanMcs.get(index).getSoalMc().getId();
+                for (; index < jawabanMcs.size(); index++) {
+                    if (jawabanMcs.get(index).getSoalMc().getId() == idSoal) {
+                        jumlahMhs++;
+                        if(jawabanMcs.get(index).getJawab()==Jawab.B){
+                            benar++;
+                        }
+                        
+                    } else {
+                        break;
+                    }
+                }
+                persenBenar=benar*100/jumlahMhs;
+                persenSalah=100-persenBenar;
+                StatistikJawaban sj=new StatistikJawaban();
+                sj.setIdSoal(idSoal);
+                sj.setJumlahMhs(jumlahMhs);
+                sj.setKe(jawabanMcs.get(index-1).getSoalMc().getPertemuanPraktikum().getPertemuanKe()+"");
+                sj.setParktikum(jawabanMcs.get(index-1).getSoalMc().getPertemuanPraktikum().getPraktikum().getNama());
+                sj.setPersenBenar(persenBenar);
+                sj.setPersenSalah(persenSalah);
+                statistikJawabans.add(sj);
+                index++;
+            } while (index < jawabanMcs.size());
+        }
+
+        return statistikJawabans;
+    }
+    
+    private void isiTableStatistikBs() {
+        Object data[][] = new Object[listStatistikJawabanBs.size()][6];
+        int row = 0;
+        for (StatistikJawaban sj : listStatistikJawabanBs) {
+            data[row][0] = sj.getParktikum();
+            data[row][1] = sj.getKe();
+            data[row][2] = sj.getIdSoal();
+            data[row][3] = sj.getPersenBenar();
+            data[row][4] = sj.getPersenSalah();
+            data[row][5] = sj.getJumlahMhs();
+            
+            row++;
+        }
+        String titile[] = {"Praktikum", "Ke", "id Soal", "Benar (%)", "Salah (%)", "Jumlah Mahasiswa"};
+        tabelStatistikBs.setModel(new DefaultTableModel(data, titile));
+        jScrollPane1.setViewportView(tabelStatistikBs);
+    }
+    
+    private void isiTableStatistikMc() {
+        Object data[][] = new Object[listStatistikJawabanMc.size()][6];
+        int row = 0;
+        for (StatistikJawaban sj : listStatistikJawabanMc) {
+            data[row][0] = sj.getParktikum();
+            data[row][1] = sj.getKe();
+            data[row][2] = sj.getIdSoal();
+            data[row][3] = sj.getPersenBenar();
+            data[row][4] = sj.getPersenSalah();
+            data[row][5] = sj.getJumlahMhs();
+            
+            row++;
+        }
+        String titile[] = {"Praktikum", "Ke", "id Soal", "Benar (%)", "Salah (%)", "Jumlah Mahasiswa"};
+        tableStatistikMc.setModel(new DefaultTableModel(data, titile));
+        jScrollPane2.setViewportView(tableStatistikMc);
+    }
+    
 }
