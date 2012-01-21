@@ -28,6 +28,7 @@ import pretest.entity.JawabanBs;
 import pretest.entity.Mahasiswa;
 import pretest.entity.NilaiBs;
 import pretest.entity.PertemuanPraktikum;
+import pretest.entity.Setting;
 import pretest.entity.SoalBs;
 import pretest.entity.enuum.Jawab;
 import pretest.entity.enuum.KunciBs;
@@ -291,7 +292,15 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         return pertemuanPraktikum;
     }
 
-    public void setPertemuanPraktikum(PertemuanPraktikum pertemuanPraktikum, Mahasiswa mhs) throws RemoteException {
+    public void setPertemuanPraktikum(PertemuanPraktikum pertemuanPraktikum, Mahasiswa mhs, Setting setting) throws RemoteException {
+        if (setting.getMenit() == 0) {
+            h = setting.getJam() - 1;
+            m = 59;
+        } else {
+            h = setting.getJam();
+            m = setting.getMenit() - 1;
+        }
+
         this.pertemuanPraktikum = pertemuanPraktikum;
         this.mhs = mhs;
         bsPretestService = MainFrameClient.getBsPretestService();

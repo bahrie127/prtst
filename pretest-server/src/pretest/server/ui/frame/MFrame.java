@@ -23,6 +23,7 @@ import pretest.server.ui.panel.PanelInputPraktikum;
 import pretest.server.ui.panel.PanelLogin;
 import pretest.server.ui.panel.PanelMahasiswa;
 import pretest.server.ui.panel.PanelNilai;
+import pretest.server.ui.panel.PanelSetting;
 import pretest.server.ui.panel.PanelSoalBs;
 import pretest.server.ui.panel.PanelSoalMc;
 import pretest.server.ui.panel.PanelStatistik;
@@ -58,6 +59,7 @@ public class MFrame extends javax.swing.JFrame {
         buttonStatistik = new javax.swing.JButton();
         buttonNilai = new javax.swing.JButton();
         buttonPraktikum = new javax.swing.JButton();
+        buttonSetting = new javax.swing.JButton();
         mainPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -143,6 +145,17 @@ public class MFrame extends javax.swing.JFrame {
         });
         jToolBar1.add(buttonPraktikum);
 
+        buttonSetting.setText("Setting");
+        buttonSetting.setFocusable(false);
+        buttonSetting.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonSetting.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonSetting.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSettingActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(buttonSetting);
+
         mainPanel.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -192,16 +205,32 @@ public class MFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonSoalMcActionPerformed
 
     private void buttonStatistikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonStatistikActionPerformed
-        showPanelSoalStatistik();
+        try {
+            showPanelSoalStatistik();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonStatistikActionPerformed
 
     private void buttonNilaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNilaiActionPerformed
-        showPanelNilai();
+        try {
+            showPanelNilai();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonNilaiActionPerformed
 
 private void buttonPraktikumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonPraktikumActionPerformed
     showPanelPraktikum();
 }//GEN-LAST:event_buttonPraktikumActionPerformed
+
+private void buttonSettingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSettingActionPerformed
+        try {
+            showPanelSetting();
+        } catch (RemoteException ex) {
+            Logger.getLogger(MFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+}//GEN-LAST:event_buttonSettingActionPerformed
 
     /**
      * @param args the command line arguments
@@ -219,6 +248,7 @@ private void buttonPraktikumActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JButton buttonMahasiswa;
     private javax.swing.JButton buttonNilai;
     private javax.swing.JButton buttonPraktikum;
+    private javax.swing.JButton buttonSetting;
     private javax.swing.JButton buttonSoalBs;
     private javax.swing.JButton buttonSoalMc;
     private javax.swing.JButton buttonStatistik;
@@ -233,7 +263,7 @@ private void buttonPraktikumActionPerformed(java.awt.event.ActionEvent evt) {//G
     private PanelStatistik panelStatistik;
     private PanelWelcome panelWelcome;
     private PanelInputPraktikum panelInputPraktikum;
-
+    private PanelSetting panelSetting;
 
     private void clearAndFillFrame(JPanel panel) {
         mainPanel.removeAll();
@@ -276,19 +306,24 @@ private void buttonPraktikumActionPerformed(java.awt.event.ActionEvent evt) {//G
         clearAndFillFrame(panelSoalMc);
     }
 
-    private void showPanelSoalStatistik() {
+    private void showPanelSoalStatistik() throws RemoteException {
         panelStatistik = new PanelStatistik();
         clearAndFillFrame(panelStatistik);
     }
 
-    private void showPanelNilai() {
+    private void showPanelNilai() throws RemoteException {
         panelNilai = new PanelNilai();
         clearAndFillFrame(panelNilai);
     }
 
     private void showPanelPraktikum() {
-        panelInputPraktikum=new PanelInputPraktikum();
+        panelInputPraktikum = new PanelInputPraktikum();
         clearAndFillFrame(panelInputPraktikum);
+    }
+
+    private void showPanelSetting() throws RemoteException {
+        panelSetting = new PanelSetting();
+        clearAndFillFrame(panelSetting);
     }
 
     private void setVisibleButton(boolean enable) {

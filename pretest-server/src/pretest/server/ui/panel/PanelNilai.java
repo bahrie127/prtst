@@ -14,11 +14,14 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+
 import pretest.entity.NilaiBs;
 import pretest.entity.NilaiMc;
 import pretest.entity.PertemuanPraktikum;
+import pretest.entity.Setting;
 import pretest.server.PretestServer;
 import pretest.server.impl.BsPretestServiceImpl;
+import pretest.server.impl.MahasiswaServiceImpl;
 import pretest.server.impl.McPretestServiceImpl;
 import pretest.server.util.NilaiUtil;
 
@@ -35,6 +38,8 @@ public class PanelNilai extends javax.swing.JPanel {
         mcPretestServiceImpl = new McPretestServiceImpl();
         bsPretestServiceImpl.setEm(PretestServer.getEntityManager());
         mcPretestServiceImpl.setEm(PretestServer.getEntityManager());
+        mahasiswaServiceImpl=new MahasiswaServiceImpl();
+        mahasiswaServiceImpl.setEm(PretestServer.getEntityManager());
         loadIsiTabel();
 
     }
@@ -269,13 +274,15 @@ buttonLulusMcActionPerformed();
     private List<NilaiUtil> listNilaiUtilsBs;
     private List<NilaiUtil> listNilaiUtilsMc;
     private List<NilaiMc> listNilaiMc;
+    private Setting setting;
     private BsPretestServiceImpl bsPretestServiceImpl;
     private McPretestServiceImpl mcPretestServiceImpl;
+    private MahasiswaServiceImpl mahasiswaServiceImpl;
 
-    private void loadIsiTabel() {
+    private void loadIsiTabel() throws RemoteException {
         listNilaiBs = bsPretestServiceImpl.findNilaiBss();
         listNilaiMc = mcPretestServiceImpl.findNilaiMcs();
-
+        setting=mahasiswaServiceImpl.getSetting();
         listNilaiUtilsBs = statistikNilaiBs(listNilaiBs);
         listNilaiUtilsMc = statistikNilaiMc(listNilaiMc);
         isiTableBs();
@@ -300,7 +307,7 @@ buttonLulusMcActionPerformed();
                     if (nilaiBses.get(index).getPertemuanPraktikum().getId() == idKe) {
                         jumlahMhs++;
                         jumlahNilai += nilaiBses.get(index).getNilai();
-                        if (nilaiBses.get(index).getNilai() >= 70.0) {
+                        if (nilaiBses.get(index).getNilai() >= setting.getBataLulus()) {
                             lulus++;
                         }
                         if (nilaiTerTinggi < nilaiBses.get(index).getNilai()) {
@@ -351,7 +358,7 @@ buttonLulusMcActionPerformed();
                     if (nilaiMcs.get(index).getPertemuanPraktikum().getId() == idKe) {
                         jumlahMhs++;
                         jumlahNilai += nilaiMcs.get(index).getNilai();
-                        if (nilaiMcs.get(index).getNilai() >= 70.0) {
+                        if (nilaiMcs.get(index).getNilai() >= setting.getBataLulus()) {
                             lulus++;
                         }
                         if (nilaiTerTinggi < nilaiMcs.get(index).getNilai()) {

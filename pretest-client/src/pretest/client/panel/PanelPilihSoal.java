@@ -23,8 +23,10 @@ import pretest.entity.NilaiBs;
 import pretest.entity.NilaiMc;
 import pretest.entity.PertemuanPraktikum;
 import pretest.entity.Praktikum;
+import pretest.entity.Setting;
 import pretest.entity.enuum.StatusNilai;
 import pretest.service.BsPretestService;
+import pretest.service.MahasiswaService;
 import pretest.service.McPretestService;
 import pretest.service.PraktikumService;
 
@@ -37,7 +39,7 @@ public class PanelPilihSoal extends javax.swing.JPanel {
     /** Creates new form PanelPilihSoal */
     public PanelPilihSoal() {
         initComponents();
-        //praktikumService = MainFrameClient.getPraktikumService();
+        
     }
 
     /** This method is called from within the constructor to
@@ -60,7 +62,7 @@ public class PanelPilihSoal extends javax.swing.JPanel {
         buttonSoalBs = new javax.swing.JButton();
         buttonSoalMc = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        labelWaktu = new javax.swing.JLabel();
 
         jLabel1.setText("Nim");
 
@@ -98,7 +100,7 @@ public class PanelPilihSoal extends javax.swing.JPanel {
 
         jLabel5.setText("Waktu");
 
-        jLabel6.setText("02 : 00");
+        labelWaktu.setText("02 : 00");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -121,7 +123,7 @@ public class PanelPilihSoal extends javax.swing.JPanel {
                         .addComponent(comboPertemuan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(buttonSoalBs, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
                         .addComponent(buttonSoalMc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jLabel6))
+                    .addComponent(labelWaktu))
                 .addContainerGap(175, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -150,7 +152,7 @@ public class PanelPilihSoal extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jLabel6))
+                    .addComponent(labelWaktu))
                 .addContainerGap(95, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -192,19 +194,21 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel labelWaktu;
     private javax.swing.JTextField textNama;
     private javax.swing.JTextField textNim;
     // End of variables declaration//GEN-END:variables
     PilihSoalListener listener;
     private Mahasiswa mhs;
     private Praktikum praktikum;
+    Setting setting;
     private PertemuanPraktikum pertemuanPraktikum;
     private List<PertemuanPraktikum> pertemuanPraktikums;
     private List<Praktikum> praktikums;
     private PraktikumService praktikumService;
     private BsPretestService bsPretestService;
     private McPretestService mcPretestService;
+    private MahasiswaService mahasiswaService;
 
     private void loadComboPraktikum() throws RemoteException {
         praktikumService = MainFrameClient.getPraktikumService();
@@ -224,7 +228,7 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
         List<NilaiBs> nilaiBses = bsPretestService.findNilaiBss(mhs, pertemuanPraktikum);
         
         if (nilaiBses.isEmpty()) {
-            listener.pilihSoal("BS", pertemuanPraktikum, mhs);
+            listener.pilihSoal("BS", pertemuanPraktikum, mhs,setting);
         } else {
            JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
         }
@@ -233,7 +237,7 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
     private void buttonSoalMcActionPerformed() throws RemoteException {
         List<NilaiMc> nilaiMcs=mcPretestService.findNilaiMcs(mhs, pertemuanPraktikum);
         if (nilaiMcs.isEmpty()) {
-            listener.pilihSoal("MC", pertemuanPraktikum, mhs);
+            listener.pilihSoal("MC", pertemuanPraktikum, mhs,setting);
         } else {
             JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
         }
@@ -277,5 +281,8 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
         comboPraktikum.setSelectedIndex(-1);
         bsPretestService = MainFrameClient.getBsPretestService();
         mcPretestService = MainFrameClient.getMcPretestService();
+        mahasiswaService=MainFrameClient.getMahasiswaService();
+        setting=mahasiswaService.getSetting();
+        labelWaktu.setText(setting.getJam()+" : "+setting.getMenit());
     }
 }

@@ -28,6 +28,7 @@ import pretest.client.util.PilihSoalListener;
 import pretest.client.util.SelesaiListener;
 import pretest.entity.Mahasiswa;
 import pretest.entity.PertemuanPraktikum;
+import pretest.entity.Setting;
 import pretest.service.BsPretestService;
 import pretest.service.MahasiswaService;
 import pretest.service.McPretestService;
@@ -173,17 +174,17 @@ public class MainFrameClient extends javax.swing.JFrame {
         PilihSoalListener listener = new PilihSoalListener() {
 
             @Override
-            public void pilihSoal(String pilih, PertemuanPraktikum pp,Mahasiswa mhs) {
+            public void pilihSoal(String pilih, PertemuanPraktikum pp,Mahasiswa mhs,Setting setting) {
                 if (pilih.equals("BS")) {
                     try {
-                        panelTestBs.setPertemuanPraktikum(pp,mhs);
+                        panelTestBs.setPertemuanPraktikum(pp,mhs,setting);
                         showPanelTestBs();
                     } catch (RemoteException ex) {
                         Logger.getLogger(MainFrameClient.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 } else {
                     try {
-                        panelTestMc.setPertemuanPraktikum(pp,mhs);
+                        panelTestMc.setPertemuanPraktikum(pp,mhs,setting);
                         showPanelTestMc();
                     } catch (RemoteException ex) {
                         Logger.getLogger(MainFrameClient.class.getName()).log(Level.SEVERE, null, ex);

@@ -6,6 +6,7 @@ package pretest.client.util;
 
 import pretest.entity.Mahasiswa;
 import pretest.entity.PertemuanPraktikum;
+import pretest.entity.Setting;
 
 /**
  *
@@ -14,5 +15,5 @@ import pretest.entity.PertemuanPraktikum;
  * Twitter : @bahrie127
  */
 public interface PilihSoalListener {
-    public void pilihSoal(String pilih,PertemuanPraktikum pp,Mahasiswa mhs);
+    public void pilihSoal(String pilih,PertemuanPraktikum pp,Mahasiswa mhs,Setting setting );
 }

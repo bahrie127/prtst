@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.RollbackException;
 import pretest.entity.Mahasiswa;
+import pretest.entity.Setting;
 import pretest.service.MahasiswaService;
 
 /**
@@ -19,9 +20,8 @@ import pretest.service.MahasiswaService;
  */
 public class MahasiswaServiceImpl extends UnicastRemoteObject implements MahasiswaService {
 
-    
-    
     EntityManager em;
+
     public MahasiswaServiceImpl() throws RemoteException {
     }
 
@@ -33,16 +33,19 @@ public class MahasiswaServiceImpl extends UnicastRemoteObject implements Mahasis
         this.em = em;
     }
 
-    
     @Override
-    public void save(Mahasiswa mahasiswa) throws RemoteException{
+    public void save(Mahasiswa mahasiswa) throws RemoteException {
         em.getTransaction().begin();
-        em.persist(mahasiswa);
+        if (mahasiswa.getId() == null) {
+            em.persist(mahasiswa);
+        } else {
+            em.merge(mahasiswa);
+        }
         em.getTransaction().commit();
     }
 
     @Override
-    public void delete(Mahasiswa mahasiswa) throws RemoteException{
+    public void delete(Mahasiswa mahasiswa) throws RemoteException {
         try {
             em.getTransaction().begin();
             em.remove(mahasiswa);
@@ -53,22 +56,22 @@ public class MahasiswaServiceImpl extends UnicastRemoteObject implements Mahasis
     }
 
     @Override
-    public Mahasiswa findMahasiswa(Long id) throws RemoteException{
+    public Mahasiswa findMahasiswa(Long id) throws RemoteException {
         return (Mahasiswa) em.createQuery("select m from Mahasiswa m where m.id=:id").setParameter("id", id).getSingleResult();
     }
-    
+
     @Override
     public Mahasiswa findMahasiswa(String nim, String password) throws RemoteException {
         return (Mahasiswa) em.createQuery("select m from Mahasiswa m where m.nim=:nim and m.password=:password").setParameter("nim", nim).setParameter("password", password).getSingleResult();
     }
 
     @Override
-    public List<Mahasiswa> findMahasiswas() throws RemoteException{
+    public List<Mahasiswa> findMahasiswas() throws RemoteException {
         return em.createQuery("select m from Mahasiswa m").getResultList();
     }
 
     @Override
-    public List<Mahasiswa> findMahasiswas(Mahasiswa mahasiswa) throws RemoteException{
+    public List<Mahasiswa> findMahasiswas(Mahasiswa mahasiswa) throws RemoteException {
         String where = "";
         if (mahasiswa.getId() != null) {
             where += " o.id = :id AND ";
@@ -109,9 +112,27 @@ public class MahasiswaServiceImpl extends UnicastRemoteObject implements Mahasis
     }
 
     @Override
-    public Long countMahasiswas() throws RemoteException{
+    public Long countMahasiswas() throws RemoteException {
         return (Long) em.createQuery("select count(o) from Mahasiswa o").getSingleResult();
     }
 
-    
+    @Override
+    public Setting getSetting() throws RemoteException {
+        return (Setting) em.createQuery("select s from Setting s where s.id=:id").setParameter("id", Long.parseLong("1")).getSingleResult();
+    }
+
+    @Override
+    public void updateSetting(Setting setting) throws RemoteException {
+        try {
+            em.getTransaction().begin();
+            if (setting.getId() == null) {
+                em.persist(setting);
+            } else {
+                em.merge(setting);
+            }
+            em.getTransaction().commit();
+        } catch (RollbackException ex) {
+            em.getTransaction().rollback();
+        }
+    }
 }

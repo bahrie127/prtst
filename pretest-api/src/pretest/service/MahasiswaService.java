@@ -8,6 +8,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 import pretest.entity.Mahasiswa;
+import pretest.entity.Setting;
 
 /**
 
@@ -27,4 +28,8 @@ public interface MahasiswaService extends Remote {
     public List<Mahasiswa> findMahasiswas(Mahasiswa mahasiswa) throws RemoteException;
 
     public Long countMahasiswas() throws RemoteException;
+    
+    public Setting getSetting() throws RemoteException;
+    
+    public void updateSetting(Setting setting) throws RemoteException;
 }
