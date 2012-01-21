@@ -218,6 +218,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private int benar = 0;
     private SelesaiListener listener;
     private int s = 60, m = 59, h = 1;
+    private Setting setting;
 
     /**
      * methode
@@ -268,7 +269,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             nilaiMc.setPertemuanPraktikum(pertemuanPraktikum);
             nilaiMc.setNilai(nilai);
             mcPretestService.save(nilaiMc);
-            listener.selesai(nilai);
+            listener.selesai(nilai,setting.getBataLulus());
         }
     }
 
@@ -335,7 +336,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 nilaiMc.setNilai(nilai);
                 nilaiMc.setStatusNilai(StatusNilai.Y);
                 mcPretestService.save(nilaiMc);
-                listener.selesai(nilai);
+                listener.selesai(nilai,setting.getBataLulus());
             }
         } else {
             JOptionPane.showMessageDialog(this, "jawaban harus di isi");
@@ -363,6 +364,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         this.pertemuanPraktikum = pertemuanPraktikum;
         this.mhs = mhs;
         mcPretestService = MainFrameClient.getMcPretestService();
+        this.setting=setting;
         soalList = mcPretestService.findSoalMcs(pertemuanPraktikum);
         soalList=setRandomSoal(soalList);
         jumlahSoal = soalList.size();

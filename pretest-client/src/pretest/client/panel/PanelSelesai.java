@@ -75,10 +75,10 @@ public class PanelSelesai extends javax.swing.JPanel {
         return nilai;
     }
 
-    public void setNilai(double nilai) {
+    public void setNilai(double nilai,double batasLulus) {
         this.nilai = nilai;
         labelNilai.setText("Nilai Anda adalah "+nilai);
-        if(nilai>70){
+        if(nilai>=batasLulus){
             labelLulus.setText("Anda dinyatakan Lulus");
         }else{
             labelLulus.setText("Anda dinyatakan Tidak Lulus");

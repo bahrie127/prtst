@@ -159,6 +159,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     // End of variables declaration//GEN-END:variables
     private PertemuanPraktikum pertemuanPraktikum;
     private BsPretestService bsPretestService;
+    private Setting setting;
     private Mahasiswa mhs;
     private JawabanBs jawabanBs;
     private NilaiBs nilaiBs;
@@ -211,7 +212,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             nilaiBs.setPertemuanPraktikum(pertemuanPraktikum);
             nilaiBs.setNilai(nilai);
             bsPretestService.save(nilaiBs);
-            listener.selesai(nilai);
+            listener.selesai(nilai,setting.getBataLulus());
         }
     }
 
@@ -275,7 +276,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 nilaiBs.setNilai(nilai);
                 nilaiBs.setStatusNilai(StatusNilai.Y);
                 bsPretestService.save(nilaiBs);
-                listener.selesai(nilai);
+                listener.selesai(nilai,setting.getBataLulus());
             }
 
 
@@ -304,6 +305,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         this.pertemuanPraktikum = pertemuanPraktikum;
         this.mhs = mhs;
         bsPretestService = MainFrameClient.getBsPretestService();
+        this.setting=setting;
         soalBsList = bsPretestService.findSoalBss(pertemuanPraktikum);
         soalBsList = setRandomSoal(soalBsList);
         jumlahSoal = soalBsList.size();

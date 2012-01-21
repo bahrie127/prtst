@@ -199,8 +199,8 @@ public class MainFrameClient extends javax.swing.JFrame {
         SelesaiListener listener=new SelesaiListener() {
 
             @Override
-            public void selesai(double nilai) {
-                panelSelesai.setNilai(nilai);
+            public void selesai(double nilai,double batasLulus) {
+                panelSelesai.setNilai(nilai,batasLulus);
                 showPanelSelesai();
             }
         };
