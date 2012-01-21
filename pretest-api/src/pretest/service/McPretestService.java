@@ -61,7 +61,7 @@ public interface McPretestService extends Remote {
 
     public List<NilaiMc> findNilaiMcs(PertemuanPraktikum pertemuanPraktikum) throws RemoteException;
     
-    public List<NilaiMc> findNilaiMcLulus(PertemuanPraktikum pertemuanPraktikum) throws RemoteException;
+    public List<NilaiMc> findNilaiMcLulus(PertemuanPraktikum pertemuanPraktikum,Double batas) throws RemoteException;
 
     public List<NilaiMc> findNilaiMcs(Mahasiswa mahasiswa) throws RemoteException;
     

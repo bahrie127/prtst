@@ -487,7 +487,7 @@ buttonLulusMcActionPerformed();
         if (tabelBS.getSelectedRow() >= 0) {
             PertemuanPraktikum pp = new PertemuanPraktikum();
             pp.setId(listNilaiUtilsBs.get(tabelBS.getSelectedRow()).getIdPertemuanPraktikum());
-            listNilaiBs = bsPretestServiceImpl.findNilaiBsLulus(pp);
+            listNilaiBs = bsPretestServiceImpl.findNilaiBsLulus(pp,setting.getBataLulus());
             isiTableSelectBs();
             dialogTableBs.setSize(500, 600);
             dialogTableBs.setLocationRelativeTo(this);
@@ -499,7 +499,7 @@ buttonLulusMcActionPerformed();
         if (tabelMC.getSelectedRow() >= 0) {
             PertemuanPraktikum pp = new PertemuanPraktikum();
             pp.setId(listNilaiUtilsMc.get(tabelMC.getSelectedRow()).getIdPertemuanPraktikum());
-            listNilaiMc = mcPretestServiceImpl.findNilaiMcLulus(pp);
+            listNilaiMc = mcPretestServiceImpl.findNilaiMcLulus(pp,setting.getBataLulus());
             isiTableSelectMc();
             dialogTableMc.setSize(500, 500);
             dialogTableMc.setLocationRelativeTo(this);
