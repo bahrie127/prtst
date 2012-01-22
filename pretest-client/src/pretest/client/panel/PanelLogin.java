@@ -13,7 +13,7 @@ package pretest.client.panel;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import pretest.client.PretestClient;
+import javax.swing.JOptionPane;
 import pretest.client.frame.MainFrameClient;
 import pretest.client.util.LoginListener;
 import pretest.entity.Mahasiswa;
@@ -104,7 +104,6 @@ public class PanelLogin extends javax.swing.JPanel {
     private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
         buttonLoginActionPerformed();
     }//GEN-LAST:event_buttonLoginActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonLogin;
     private javax.swing.JLabel jLabel1;
@@ -115,17 +114,29 @@ public class PanelLogin extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
     private LoginListener listener;
 
-    private void buttonLoginActionPerformed(){
+    private boolean cekText() {
+        if (!textNim.getText().isEmpty() && !textPassword.getText().isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private void buttonLoginActionPerformed() {
         try {
-            Mahasiswa mhs=MainFrameClient.getMahasiswaService().findMahasiswa(textNim.getText(), textPassword.getText());
-            if(mhs!=null){
-                listener.login(mhs);
+            if (cekText()) {
+                Mahasiswa mhs = MainFrameClient.getMahasiswaService().findMahasiswa(textNim.getText(), textPassword.getText());
+                if (mhs != null) {
+                    listener.login(mhs);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "nim dan password harus diisi");
             }
         } catch (RemoteException ex) {
-            Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(PanelLogin.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "nim dan password tidak sesuai");
         }
     }
-    
+
     public LoginListener getListener() {
         return listener;
     }

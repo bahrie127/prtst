@@ -24,6 +24,8 @@ import pretest.entity.NilaiMc;
 import pretest.entity.PertemuanPraktikum;
 import pretest.entity.Praktikum;
 import pretest.entity.Setting;
+import pretest.entity.SoalBs;
+import pretest.entity.SoalMc;
 import pretest.entity.enuum.StatusNilai;
 import pretest.service.BsPretestService;
 import pretest.service.MahasiswaService;
@@ -39,7 +41,7 @@ public class PanelPilihSoal extends javax.swing.JPanel {
     /** Creates new form PanelPilihSoal */
     public PanelPilihSoal() {
         initComponents();
-        
+
     }
 
     /** This method is called from within the constructor to
@@ -205,6 +207,8 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
     private PertemuanPraktikum pertemuanPraktikum;
     private List<PertemuanPraktikum> pertemuanPraktikums;
     private List<Praktikum> praktikums;
+    private List<SoalMc> listSoalMc;
+    private List<SoalBs> listSoalBs;
     private PraktikumService praktikumService;
     private BsPretestService bsPretestService;
     private McPretestService mcPretestService;
@@ -226,18 +230,28 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
      */
     private void buttonSoalBsActionPerformed() throws RemoteException {
         List<NilaiBs> nilaiBses = bsPretestService.findNilaiBss(mhs, pertemuanPraktikum);
-        
+
         if (nilaiBses.isEmpty()) {
-            listener.pilihSoal("BS", pertemuanPraktikum, mhs,setting);
+            listSoalBs = bsPretestService.findSoalBss(pertemuanPraktikum);
+            if (!listSoalBs.isEmpty()) {
+                listener.pilihSoal("BS", pertemuanPraktikum, mhs, setting);
+            } else {
+                JOptionPane.showMessageDialog(this, "maaf soal kosong");
+            }
         } else {
-           JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
+            JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
         }
     }
 
     private void buttonSoalMcActionPerformed() throws RemoteException {
-        List<NilaiMc> nilaiMcs=mcPretestService.findNilaiMcs(mhs, pertemuanPraktikum);
+        List<NilaiMc> nilaiMcs = mcPretestService.findNilaiMcs(mhs, pertemuanPraktikum);
         if (nilaiMcs.isEmpty()) {
-            listener.pilihSoal("MC", pertemuanPraktikum, mhs,setting);
+            listSoalMc = mcPretestService.findSoalMcs(pertemuanPraktikum);
+            if (!listSoalMc.isEmpty()) {
+                listener.pilihSoal("MC", pertemuanPraktikum, mhs, setting);
+            } else {
+                JOptionPane.showMessageDialog(this, "maaf soal kosong");
+            }
         } else {
             JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
         }
@@ -281,8 +295,8 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
         comboPraktikum.setSelectedIndex(-1);
         bsPretestService = MainFrameClient.getBsPretestService();
         mcPretestService = MainFrameClient.getMcPretestService();
-        mahasiswaService=MainFrameClient.getMahasiswaService();
-        setting=mahasiswaService.getSetting();
-        labelWaktu.setText(setting.getJam()+" : "+setting.getMenit());
+        mahasiswaService = MainFrameClient.getMahasiswaService();
+        setting = mahasiswaService.getSetting();
+        labelWaktu.setText(setting.getJam() + " : " + setting.getMenit());
     }
 }

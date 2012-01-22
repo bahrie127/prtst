@@ -203,7 +203,7 @@ private void buttonJawabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
         Time t = new Time();
         TimeEntity te = t.timeFormat(s, m, h);
-        labelWaktu.setText(te.getJam() + " : " + te.getMenit());
+        labelWaktu.setText(te.getJam() + " : " + te.getMenit()+" : "+te.getDetik());
         if (h == -1) {
             h--;
             nilai = ((double) bener / (double) jumlahSoal) * 100;
