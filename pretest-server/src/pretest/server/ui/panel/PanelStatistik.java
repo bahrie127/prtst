@@ -13,6 +13,8 @@ package pretest.server.ui.panel;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import pretest.entity.JawabanBs;
 import pretest.entity.JawabanMc;
@@ -32,16 +34,10 @@ public class PanelStatistik extends javax.swing.JPanel {
     public PanelStatistik() throws RemoteException {
         initComponents();
         bsPretestServiceImpl = new BsPretestServiceImpl();
-        mcPretestServiceImpl = new McPretestServiceImpl();
         bsPretestServiceImpl.setEm(PretestServer.getEntityManager());
+        mcPretestServiceImpl = new McPretestServiceImpl();
         mcPretestServiceImpl.setEm(PretestServer.getEntityManager());
-        
-        listJawabanBs=bsPretestServiceImpl.findJawabanBss();
-        listJawabanMc=mcPretestServiceImpl.findJawabanMcs();
-        listStatistikJawabanBs=statistikJawabanBs(listJawabanBs);
-        listStatistikJawabanMc=statistikJawabanMc(listJawabanMc);
-        isiTableStatistikBs();
-        isiTableStatistikMc();
+        reloadAll();
     }
 
     /** This method is called from within the constructor to
@@ -56,9 +52,11 @@ public class PanelStatistik extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelStatistikBs = new javax.swing.JTable();
+        radioReloadBs = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableStatistikMc = new javax.swing.JTable();
+        radioReloadMc = new javax.swing.JButton();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Statistik Benar Salah"));
 
@@ -75,17 +73,30 @@ public class PanelStatistik extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tabelStatistikBs);
 
+        radioReloadBs.setText("Reload");
+        radioReloadBs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioReloadBsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(radioReloadBs)
+                .addContainerGap(420, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(radioReloadBs)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Statistik Pilihan Ganda"));
@@ -103,17 +114,30 @@ public class PanelStatistik extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(tableStatistikMc);
 
+        radioReloadMc.setText("Reload");
+        radioReloadMc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioReloadMcActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 493, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(radioReloadMc)
+                .addContainerGap(420, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 286, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(244, Short.MAX_VALUE)
+                .addComponent(radioReloadMc)
+                .addContainerGap())
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,51 +160,89 @@ public class PanelStatistik extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+private void radioReloadBsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioReloadBsActionPerformed
+    try {
+        reloadBs();
+    } catch (RemoteException ex) {
+        Logger.getLogger(PanelStatistik.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}//GEN-LAST:event_radioReloadBsActionPerformed
+
+private void radioReloadMcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioReloadMcActionPerformed
+    try {
+        reloadMc();
+    } catch (RemoteException ex) {
+        Logger.getLogger(PanelStatistik.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}//GEN-LAST:event_radioReloadMcActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton radioReloadBs;
+    private javax.swing.JButton radioReloadMc;
     private javax.swing.JTable tabelStatistikBs;
     private javax.swing.JTable tableStatistikMc;
     // End of variables declaration//GEN-END:variables
-
     private BsPretestServiceImpl bsPretestServiceImpl;
     private McPretestServiceImpl mcPretestServiceImpl;
     private List<JawabanBs> listJawabanBs;
     private List<JawabanMc> listJawabanMc;
     private List<StatistikJawaban> listStatistikJawabanBs;
     private List<StatistikJawaban> listStatistikJawabanMc;
-    
+
+    private void reloadBs() throws RemoteException {
+        listJawabanBs = bsPretestServiceImpl.findJawabanBss();
+        listStatistikJawabanBs = statistikJawabanBs(listJawabanBs);
+        isiTableStatistikBs();
+
+    }
+
+    private void reloadMc() throws RemoteException {
+        listJawabanMc = mcPretestServiceImpl.findJawabanMcs();
+        listStatistikJawabanMc = statistikJawabanMc(listJawabanMc);
+        isiTableStatistikMc();
+    }
+
+    private void reloadAll() throws RemoteException {
+        reloadBs();
+        reloadMc();
+    }
+
     private List<StatistikJawaban> statistikJawabanBs(List<JawabanBs> jawabanBses) {
         List<StatistikJawaban> statistikJawabans = new ArrayList<StatistikJawaban>();
+        if (!statistikJawabans.isEmpty()) {
+            statistikJawabans.clear();
+        }
         if (!jawabanBses.isEmpty()) {
             int index = 0;
             do {
-                int jumlahMhs=0;
-                int benar=0;
-                int persenBenar=0;
-                int persenSalah=0;
-                double nilaiTerRendah = 100;
+                int jumlahMhs = 0;
+                int benar = 0;
+                int persenBenar = 0;
+                int persenSalah = 0;
                 Long idSoal = jawabanBses.get(index).getSoalBs().getId();
                 for (; index < jawabanBses.size(); index++) {
-                    if (jawabanBses.get(index).getSoalBs().getId() == idSoal) {
+                    Long soalId = jawabanBses.get(index).getSoalBs().getId();
+                    if (idSoal.toString().equals(soalId.toString())) {
                         jumlahMhs++;
-                        if(jawabanBses.get(index).getJawab()==Jawab.B){
+                        if (jawabanBses.get(index).getJawab() == Jawab.B) {
                             benar++;
                         }
-                        
+
                     } else {
                         break;
                     }
                 }
-                persenBenar=benar*100/jumlahMhs;
-                persenSalah=100-persenBenar;
-                StatistikJawaban sj=new StatistikJawaban();
+                persenBenar = benar * 100 / jumlahMhs;
+                persenSalah = 100 - persenBenar;
+                StatistikJawaban sj = new StatistikJawaban();
                 sj.setIdSoal(idSoal);
                 sj.setJumlahMhs(jumlahMhs);
-                sj.setKe(jawabanBses.get(index-1).getSoalBs().getPertemuanPraktikum().getPertemuanKe()+"");
-                sj.setParktikum(jawabanBses.get(index-1).getSoalBs().getPertemuanPraktikum().getPraktikum().getNama());
+                sj.setKe(jawabanBses.get(index - 1).getSoalBs().getPertemuanPraktikum().getPertemuanKe() + "");
+                sj.setParktikum(jawabanBses.get(index - 1).getSoalBs().getPertemuanPraktikum().getPraktikum().getNama());
                 sj.setPersenBenar(persenBenar);
                 sj.setPersenSalah(persenSalah);
                 statistikJawabans.add(sj);
@@ -189,36 +251,39 @@ public class PanelStatistik extends javax.swing.JPanel {
 
         return statistikJawabans;
     }
-    
+
     private List<StatistikJawaban> statistikJawabanMc(List<JawabanMc> jawabanMcs) {
         List<StatistikJawaban> statistikJawabans = new ArrayList<StatistikJawaban>();
+        if (!statistikJawabans.isEmpty()) {
+            statistikJawabans.clear();
+        }
         if (!jawabanMcs.isEmpty()) {
             int index = 0;
             do {
-                int jumlahMhs=0;
-                int benar=0;
-                int persenBenar=0;
-                int persenSalah=0;
-                double nilaiTerRendah = 100;
+                int jumlahMhs = 0;
+                int benar = 0;
+                int persenBenar = 0;
+                int persenSalah = 0;
                 Long idSoal = jawabanMcs.get(index).getSoalMc().getId();
                 for (; index < jawabanMcs.size(); index++) {
-                    if (jawabanMcs.get(index).getSoalMc().getId() == idSoal) {
+                    Long soalId = jawabanMcs.get(index).getSoalMc().getId();
+                    if (idSoal.toString().equals(soalId.toString())) {
                         jumlahMhs++;
-                        if(jawabanMcs.get(index).getJawab()==Jawab.B){
+                        if (jawabanMcs.get(index).getJawab() == Jawab.B) {
                             benar++;
                         }
-                        
+
                     } else {
                         break;
                     }
                 }
-                persenBenar=benar*100/jumlahMhs;
-                persenSalah=100-persenBenar;
-                StatistikJawaban sj=new StatistikJawaban();
+                persenBenar = benar * 100 / jumlahMhs;
+                persenSalah = 100 - persenBenar;
+                StatistikJawaban sj = new StatistikJawaban();
                 sj.setIdSoal(idSoal);
                 sj.setJumlahMhs(jumlahMhs);
-                sj.setKe(jawabanMcs.get(index-1).getSoalMc().getPertemuanPraktikum().getPertemuanKe()+"");
-                sj.setParktikum(jawabanMcs.get(index-1).getSoalMc().getPertemuanPraktikum().getPraktikum().getNama());
+                sj.setKe(jawabanMcs.get(index - 1).getSoalMc().getPertemuanPraktikum().getPertemuanKe() + "");
+                sj.setParktikum(jawabanMcs.get(index - 1).getSoalMc().getPertemuanPraktikum().getPraktikum().getNama());
                 sj.setPersenBenar(persenBenar);
                 sj.setPersenSalah(persenSalah);
                 statistikJawabans.add(sj);
@@ -227,7 +292,7 @@ public class PanelStatistik extends javax.swing.JPanel {
 
         return statistikJawabans;
     }
-    
+
     private void isiTableStatistikBs() {
         Object data[][] = new Object[listStatistikJawabanBs.size()][6];
         int row = 0;
@@ -238,14 +303,14 @@ public class PanelStatistik extends javax.swing.JPanel {
             data[row][3] = sj.getPersenBenar();
             data[row][4] = sj.getPersenSalah();
             data[row][5] = sj.getJumlahMhs();
-            
+
             row++;
         }
         String titile[] = {"Praktikum", "Ke", "id Soal", "Benar (%)", "Salah (%)", "Jumlah Mahasiswa"};
         tabelStatistikBs.setModel(new DefaultTableModel(data, titile));
         jScrollPane1.setViewportView(tabelStatistikBs);
     }
-    
+
     private void isiTableStatistikMc() {
         Object data[][] = new Object[listStatistikJawabanMc.size()][6];
         int row = 0;
@@ -256,12 +321,11 @@ public class PanelStatistik extends javax.swing.JPanel {
             data[row][3] = sj.getPersenBenar();
             data[row][4] = sj.getPersenSalah();
             data[row][5] = sj.getJumlahMhs();
-            
+
             row++;
         }
         String titile[] = {"Praktikum", "Ke", "id Soal", "Benar (%)", "Salah (%)", "Jumlah Mahasiswa"};
         tableStatistikMc.setModel(new DefaultTableModel(data, titile));
         jScrollPane2.setViewportView(tableStatistikMc);
     }
-    
 }

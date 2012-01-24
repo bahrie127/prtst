@@ -11,6 +11,7 @@
 package pretest.server.ui.panel;
 
 import java.rmi.RemoteException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -304,7 +305,8 @@ buttonLulusMcActionPerformed();
                 double nilaiTerRendah = 100;
                 Long idKe = nilaiBses.get(index).getPertemuanPraktikum().getId();
                 for (; index < nilaiBses.size(); index++) {
-                    if (nilaiBses.get(index).getPertemuanPraktikum().getId() == idKe) {
+                    Long keId=nilaiBses.get(index).getPertemuanPraktikum().getId();
+                    if ( idKe.toString().equals(keId.toString())) {
                         jumlahMhs++;
                         jumlahNilai += nilaiBses.get(index).getNilai();
                         if (nilaiBses.get(index).getNilai() >= setting.getBataLulus()) {
@@ -321,6 +323,10 @@ buttonLulusMcActionPerformed();
                     }
                 }
                 mean = jumlahNilai / jumlahMhs;
+                
+                NumberFormat nf=NumberFormat.getInstance();
+                nf.setMaximumFractionDigits(2);
+                
                 persenLulus = (lulus * 100 / jumlahMhs);
                 persenGagal = 100 - persenLulus;
                 NilaiUtil nu = new NilaiUtil();
@@ -331,9 +337,8 @@ buttonLulusMcActionPerformed();
                 nu.setNilaiMax(nilaiTerTinggi);
                 nu.setNilaiMin(nilaiTerRendah);
                 nu.setPraktikumKe(nilaiBses.get(index - 1).getPertemuanPraktikum().getPertemuanKe() + "");
-                nu.setRata(mean);
+                nu.setRata(Double.parseDouble(nf.format(mean)));
                 nilaiUtils.add(nu);
-                index++;
             } while (index < nilaiBses.size());
         }
 
@@ -355,7 +360,8 @@ buttonLulusMcActionPerformed();
                 double nilaiTerRendah = 100;
                 Long idKe = nilaiMcs.get(index).getPertemuanPraktikum().getId();
                 for (; index < nilaiMcs.size(); index++) {
-                    if (nilaiMcs.get(index).getPertemuanPraktikum().getId() == idKe) {
+                    Long keId=nilaiMcs.get(index).getPertemuanPraktikum().getId();
+                    if (idKe.toString().equals(keId.toString())) {
                         jumlahMhs++;
                         jumlahNilai += nilaiMcs.get(index).getNilai();
                         if (nilaiMcs.get(index).getNilai() >= setting.getBataLulus()) {
@@ -372,6 +378,10 @@ buttonLulusMcActionPerformed();
                     }
                 }
                 mean = jumlahNilai / jumlahMhs;
+                
+                NumberFormat nf=NumberFormat.getInstance();
+                nf.setMaximumFractionDigits(2);
+                
                 persenLulus = (lulus * 100 / jumlahMhs);
                 persenGagal = 100 - persenLulus;
                 NilaiUtil nu = new NilaiUtil();
@@ -382,9 +392,8 @@ buttonLulusMcActionPerformed();
                 nu.setNilaiMax(nilaiTerTinggi);
                 nu.setNilaiMin(nilaiTerRendah);
                 nu.setPraktikumKe(nilaiMcs.get(index - 1).getPertemuanPraktikum().getPertemuanKe() + "");
-                nu.setRata(mean);
+                nu.setRata(Double.parseDouble(nf.format(mean)));
                 nilaiUtils.add(nu);
-                index++;
             } while (index < nilaiMcs.size());
         }
 
