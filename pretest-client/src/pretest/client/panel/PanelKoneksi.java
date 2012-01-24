@@ -25,42 +25,48 @@ import pretest.service.BsPretestService;
  * @author bahrie
  */
 public class PanelKoneksi extends javax.swing.JPanel {
-private static BsPretestService bsPretestService;
+
+    private static BsPretestService bsPretestService;
+
     /** Creates new form PanelKoneksi */
     public PanelKoneksi() {
         initComponents();
     }
-    
+
     private boolean testKoneksi() {
         try {
-            bsPretestService=(BsPretestService) Naming.lookup("rmi://"+textIp.getText()+":4562/bsPretestService");
-            if(bsPretestService !=null){
+            bsPretestService = (BsPretestService) Naming.lookup("rmi://" + textIp.getText() + ":4562/bsPretestService");
+            if (bsPretestService != null) {
                 return true;
             }
-            
+
         } catch (NotBoundException ex) {
-            Logger.getLogger(PanelKoneksi.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(PanelKoneksi.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } catch (MalformedURLException ex) {
-            Logger.getLogger(PanelKoneksi.class.getName()).log(Level.SEVERE, null, ex);
+           // Logger.getLogger(PanelKoneksi.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         } catch (RemoteException ex) {
-            Logger.getLogger(PanelKoneksi.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(PanelKoneksi.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return false;
     }
 
-    private void buttonOkKoneksiActionPerformed(){
-       
-            if(testKoneksi()){
+    private void buttonOkKoneksiActionPerformed() {
+        if (!textIp.getText().isEmpty()) {
+            if (testKoneksi()) {
                 JOptionPane.showMessageDialog(null, "koneksi ok");
                 listener.konek(textIp.getText());
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "koneksi gagal");
             }
-        
+        } else {
+            JOptionPane.showMessageDialog(null, "IP Tidak boleh kosong");
+        }
+
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -116,9 +122,8 @@ private static BsPretestService bsPretestService;
 
     private void buttonOkKoneksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOkKoneksiActionPerformed
         buttonOkKoneksiActionPerformed();
-        
-    }//GEN-LAST:event_buttonOkKoneksiActionPerformed
 
+    }//GEN-LAST:event_buttonOkKoneksiActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonOkKoneksi;
     private javax.swing.JLabel jLabel1;
@@ -133,6 +138,4 @@ private static BsPretestService bsPretestService;
     public void setListener(KonekListener listener) {
         this.listener = listener;
     }
-    
-    
 }
