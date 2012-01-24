@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pretest.client.PretestClient;
 import pretest.client.frame.MainFrameClient;
+import pretest.client.util.BeanComboBoxModel;
 import pretest.client.util.PilihSoalListener;
 import pretest.entity.Mahasiswa;
 import pretest.entity.NilaiBs;
@@ -214,14 +215,12 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
     private McPretestService mcPretestService;
     private MahasiswaService mahasiswaService;
 
-    private void loadComboPraktikum() throws RemoteException {
-        praktikumService = MainFrameClient.getPraktikumService();
-        comboPraktikum.removeAllItems();
-        praktikums = praktikumService.findPraktikums();
-        for (Praktikum p : praktikums) {
-            comboPraktikum.addItem(p.getNama());
-        }
+    public void reModelComboPraktikum() {
+        boolean[] fieldVisible = {false, true};
+        BeanComboBoxModel model = new BeanComboBoxModel(praktikums, fieldVisible, " - ");
+        comboPraktikum.setModel(model);
 
+        pertemuanPraktikum = null;
     }
 
     /**
@@ -229,35 +228,44 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
      * @throws RemoteException 
      */
     private void buttonSoalBsActionPerformed() throws RemoteException {
-        List<NilaiBs> nilaiBses = bsPretestService.findNilaiBss(mhs, pertemuanPraktikum);
+        if (comboPertemuan.getSelectedIndex() >= 0) {
+            List<NilaiBs> nilaiBses = bsPretestService.findNilaiBss(mhs, pertemuanPraktikum);
 
-        if (nilaiBses.isEmpty()) {
-            listSoalBs = bsPretestService.findSoalBss(pertemuanPraktikum);
-            if (!listSoalBs.isEmpty()) {
-                listener.pilihSoal("BS", pertemuanPraktikum, mhs, setting);
+            if (nilaiBses.isEmpty()) {
+                listSoalBs = bsPretestService.findSoalBss(pertemuanPraktikum);
+                if (!listSoalBs.isEmpty()) {
+                    listener.pilihSoal("BS", pertemuanPraktikum, mhs, setting);
+                } else {
+                    JOptionPane.showMessageDialog(this, "maaf soal kosong");
+                }
             } else {
-                JOptionPane.showMessageDialog(this, "maaf soal kosong");
+                JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
+            JOptionPane.showMessageDialog(this, "combo praktikum harap di isi dulu");
         }
     }
 
     private void buttonSoalMcActionPerformed() throws RemoteException {
-        List<NilaiMc> nilaiMcs = mcPretestService.findNilaiMcs(mhs, pertemuanPraktikum);
-        if (nilaiMcs.isEmpty()) {
-            listSoalMc = mcPretestService.findSoalMcs(pertemuanPraktikum);
-            if (!listSoalMc.isEmpty()) {
-                listener.pilihSoal("MC", pertemuanPraktikum, mhs, setting);
+        if (comboPertemuan.getSelectedIndex() >= 0) {
+            List<NilaiMc> nilaiMcs = mcPretestService.findNilaiMcs(mhs, pertemuanPraktikum);
+            if (nilaiMcs.isEmpty()) {
+                listSoalMc = mcPretestService.findSoalMcs(pertemuanPraktikum);
+                if (!listSoalMc.isEmpty()) {
+                    listener.pilihSoal("MC", pertemuanPraktikum, mhs, setting);
+                } else {
+                    JOptionPane.showMessageDialog(this, "maaf soal kosong");
+                }
             } else {
-                JOptionPane.showMessageDialog(this, "maaf soal kosong");
+                JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "maaf anda tidak boleh membuka pretest yang pernah dikerjakan");
+            JOptionPane.showMessageDialog(this, "combo praktikum harap di isi dulu");
         }
     }
 
     private void comboPraktikumItemStateChanged() throws RemoteException {
+
         if (comboPraktikum.getSelectedIndex() >= 0) {
             praktikum = praktikums.get(comboPraktikum.getSelectedIndex());
             pertemuanPraktikums = praktikumService.findPraktikumPertemuans(praktikum);
@@ -291,7 +299,9 @@ private void comboPertemuanItemStateChanged(java.awt.event.ItemEvent evt) {//GEN
         this.mhs = mhs;
         textNama.setText(mhs.getNama());
         textNim.setText(mhs.getNim());
-        loadComboPraktikum();
+        praktikumService = MainFrameClient.getPraktikumService();
+        praktikums = praktikumService.findPraktikums();
+        reModelComboPraktikum();
         comboPraktikum.setSelectedIndex(-1);
         bsPretestService = MainFrameClient.getBsPretestService();
         mcPretestService = MainFrameClient.getMcPretestService();

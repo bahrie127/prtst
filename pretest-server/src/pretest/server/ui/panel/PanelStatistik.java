@@ -184,7 +184,6 @@ public class PanelStatistik extends javax.swing.JPanel {
                 sj.setPersenBenar(persenBenar);
                 sj.setPersenSalah(persenSalah);
                 statistikJawabans.add(sj);
-                index++;
             } while (index < jawabanBses.size());
         }
 
@@ -223,7 +222,6 @@ public class PanelStatistik extends javax.swing.JPanel {
                 sj.setPersenBenar(persenBenar);
                 sj.setPersenSalah(persenSalah);
                 statistikJawabans.add(sj);
-                index++;
             } while (index < jawabanMcs.size());
         }
 

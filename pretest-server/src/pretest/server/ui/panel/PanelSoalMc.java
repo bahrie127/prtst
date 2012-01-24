@@ -13,8 +13,6 @@ package pretest.server.ui.panel;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -27,8 +25,6 @@ import pretest.entity.enuum.KunciMc;
 import pretest.server.PretestServer;
 import pretest.server.impl.McPretestServiceImpl;
 import pretest.server.impl.PraktikumServiceImpl;
-import pretest.service.McPretestService;
-import pretest.service.PraktikumService;
 
 /**
  *
