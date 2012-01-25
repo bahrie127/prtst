@@ -326,7 +326,8 @@ buttonLulusMcActionPerformed();
                 
                 NumberFormat nf=NumberFormat.getInstance();
                 nf.setMaximumFractionDigits(2);
-                
+                String masihKoma=nf.format(mean);
+                String sudahPakeNol=masihKoma.replace(',', '.');
                 persenLulus = (lulus * 100 / jumlahMhs);
                 persenGagal = 100 - persenLulus;
                 NilaiUtil nu = new NilaiUtil();
@@ -337,7 +338,7 @@ buttonLulusMcActionPerformed();
                 nu.setNilaiMax(nilaiTerTinggi);
                 nu.setNilaiMin(nilaiTerRendah);
                 nu.setPraktikumKe(nilaiBses.get(index - 1).getPertemuanPraktikum().getPertemuanKe() + "");
-                nu.setRata(Double.parseDouble(nf.format(mean)));
+                nu.setRata(Double.parseDouble(sudahPakeNol));
                 nilaiUtils.add(nu);
             } while (index < nilaiBses.size());
         }
@@ -381,7 +382,8 @@ buttonLulusMcActionPerformed();
                 
                 NumberFormat nf=NumberFormat.getInstance();
                 nf.setMaximumFractionDigits(2);
-                
+                String masihKoma=nf.format(mean);
+                String sudahPakeNol=masihKoma.replace(',', '.');
                 persenLulus = (lulus * 100 / jumlahMhs);
                 persenGagal = 100 - persenLulus;
                 NilaiUtil nu = new NilaiUtil();
@@ -392,7 +394,7 @@ buttonLulusMcActionPerformed();
                 nu.setNilaiMax(nilaiTerTinggi);
                 nu.setNilaiMin(nilaiTerRendah);
                 nu.setPraktikumKe(nilaiMcs.get(index - 1).getPertemuanPraktikum().getPertemuanKe() + "");
-                nu.setRata(Double.parseDouble(nf.format(mean)));
+                nu.setRata(Double.parseDouble(sudahPakeNol));
                 nilaiUtils.add(nu);
             } while (index < nilaiMcs.size());
         }
