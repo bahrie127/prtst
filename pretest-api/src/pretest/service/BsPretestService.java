@@ -12,6 +12,7 @@ import pretest.entity.Mahasiswa;
 import pretest.entity.NilaiBs;
 import pretest.entity.PertemuanPraktikum;
 import pretest.entity.SoalBs;
+import pretest.entity.enuum.Jawab;
 
 /**
  *
@@ -47,6 +48,8 @@ public interface BsPretestService extends Remote {
     public List<JawabanBs> findJawabanBss(SoalBs soalBs) throws RemoteException;
 
     public List<JawabanBs> findJawabanBss(JawabanBs jawabanBs) throws RemoteException;
+    
+    public List<JawabanBs> findJawabanBss(Long idSoal,Jawab jawab) throws RemoteException;
 
     public Long countJawabanBss() throws RemoteException;
 

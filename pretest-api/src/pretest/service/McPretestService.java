@@ -12,6 +12,7 @@ import pretest.entity.Mahasiswa;
 import pretest.entity.NilaiMc;
 import pretest.entity.PertemuanPraktikum;
 import pretest.entity.SoalMc;
+import pretest.entity.enuum.Jawab;
 
 /**
  *
@@ -47,6 +48,8 @@ public interface McPretestService extends Remote {
     public List<JawabanMc> findJawabanMcs(SoalMc soalMc) throws RemoteException;
 
     public List<JawabanMc> findJawabanMcs(JawabanMc jawabanMc) throws RemoteException;
+    
+    public List<JawabanMc> findJawabanMcs(Long idSoal, Jawab jawab) throws RemoteException;
 
     public Long countJawabanMcs() throws RemoteException;
 

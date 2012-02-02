@@ -15,6 +15,7 @@ import pretest.entity.Mahasiswa;
 import pretest.entity.NilaiMc;
 import pretest.entity.PertemuanPraktikum;
 import pretest.entity.SoalMc;
+import pretest.entity.enuum.Jawab;
 import pretest.service.McPretestService;
 
 /**
@@ -158,6 +159,11 @@ public class McPretestServiceImpl extends UnicastRemoteObject implements McPrete
     @Override
     public List<JawabanMc> findJawabanMcs(SoalMc soalMc) {
         return em.createQuery("select j from JawabanMc j where j.soalMc=:soalMc order by j.id").setParameter("soalMc", soalMc).getResultList();
+    }
+    
+    @Override
+    public List<JawabanMc> findJawabanMcs(Long idSoal, Jawab jawab) throws RemoteException {
+        return em.createQuery("select j from JawabanMc j where j.soalMc.id=:idSoal AND j.jawab=:jawab").setParameter("idSoal", idSoal).setParameter("jawab", jawab).getResultList();
     }
 
     @Override
@@ -303,6 +309,8 @@ public class McPretestServiceImpl extends UnicastRemoteObject implements McPrete
     public Long countNilaiMcs() {
         return (Long) em.createQuery("select count(o) from NilaiMc o").getSingleResult();
     }
+
+    
 
     
 }

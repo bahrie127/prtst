@@ -15,6 +15,7 @@ import pretest.entity.Mahasiswa;
 import pretest.entity.NilaiBs;
 import pretest.entity.PertemuanPraktikum;
 import pretest.entity.SoalBs;
+import pretest.entity.enuum.Jawab;
 import pretest.service.BsPretestService;
 
 /**
@@ -160,6 +161,11 @@ public class BsPretestServiceImpl extends UnicastRemoteObject implements BsPrete
     }
 
     @Override
+    public List<JawabanBs> findJawabanBss(Long idSoal, Jawab jawab) throws RemoteException {
+        return em.createQuery("select j from JawabanBs j where j.soalBs.id=:idSoal AND j.jawab=:jawab").setParameter("idSoal", idSoal).setParameter("jawab", jawab).getResultList();
+    }
+    
+    @Override
     public List<JawabanBs> findJawabanBss(JawabanBs jawabanBs) {
         String where = "";
         if (jawabanBs.getId() != null) {
@@ -302,6 +308,8 @@ public class BsPretestServiceImpl extends UnicastRemoteObject implements BsPrete
     public Long countNilaiBss() {
         return (Long) em.createQuery("select count(o) from NilaiBs o").getSingleResult();
     }
+
+    
 
     
 }

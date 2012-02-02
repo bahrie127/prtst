@@ -49,14 +49,80 @@ public class PanelStatistik extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dialogTabelSelectedBs = new javax.swing.JDialog();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tabelSelectedBs = new javax.swing.JTable();
+        dialogTabelSelectedMc = new javax.swing.JDialog();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tabelSelectedMc = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabelStatistikBs = new javax.swing.JTable();
         radioReloadBs = new javax.swing.JButton();
+        buttonBenarBs = new javax.swing.JButton();
+        buttonSalahBs = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableStatistikMc = new javax.swing.JTable();
         radioReloadMc = new javax.swing.JButton();
+        buttonBenarMc = new javax.swing.JButton();
+        buttonSalahMc = new javax.swing.JButton();
+
+        dialogTabelSelectedBs.setTitle("Tabel Mahasiswa");
+
+        tabelSelectedBs.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tabelSelectedBs);
+
+        javax.swing.GroupLayout dialogTabelSelectedBsLayout = new javax.swing.GroupLayout(dialogTabelSelectedBs.getContentPane());
+        dialogTabelSelectedBs.getContentPane().setLayout(dialogTabelSelectedBsLayout);
+        dialogTabelSelectedBsLayout.setHorizontalGroup(
+            dialogTabelSelectedBsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+        );
+        dialogTabelSelectedBsLayout.setVerticalGroup(
+            dialogTabelSelectedBsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+        );
+
+        dialogTabelSelectedMc.setTitle("Tabel Mahasiswa");
+
+        tabelSelectedMc.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane5.setViewportView(tabelSelectedMc);
+
+        javax.swing.GroupLayout dialogTabelSelectedMcLayout = new javax.swing.GroupLayout(dialogTabelSelectedMc.getContentPane());
+        dialogTabelSelectedMc.getContentPane().setLayout(dialogTabelSelectedMcLayout);
+        dialogTabelSelectedMcLayout.setHorizontalGroup(
+            dialogTabelSelectedMcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        );
+        dialogTabelSelectedMcLayout.setVerticalGroup(
+            dialogTabelSelectedMcLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+        );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Statistik Benar Salah"));
 
@@ -80,6 +146,20 @@ public class PanelStatistik extends javax.swing.JPanel {
             }
         });
 
+        buttonBenarBs.setText("Benar");
+        buttonBenarBs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBenarBsActionPerformed(evt);
+            }
+        });
+
+        buttonSalahBs.setText("Salah");
+        buttonSalahBs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSalahBsActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -88,14 +168,21 @@ public class PanelStatistik extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(radioReloadBs)
-                .addContainerGap(420, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonBenarBs)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonSalahBs)
+                .addContainerGap(301, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(radioReloadBs)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioReloadBs)
+                    .addComponent(buttonBenarBs)
+                    .addComponent(buttonSalahBs))
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
@@ -121,6 +208,20 @@ public class PanelStatistik extends javax.swing.JPanel {
             }
         });
 
+        buttonBenarMc.setText("Benar");
+        buttonBenarMc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBenarMcActionPerformed(evt);
+            }
+        });
+
+        buttonSalahMc.setText("Salah");
+        buttonSalahMc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSalahMcActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -128,16 +229,23 @@ public class PanelStatistik extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(radioReloadMc)
-                .addContainerGap(420, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonBenarMc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonSalahMc)
+                .addContainerGap(301, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(244, Short.MAX_VALUE)
-                .addComponent(radioReloadMc)
-                .addContainerGap())
+                .addContainerGap(223, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(radioReloadMc)
+                    .addComponent(buttonBenarMc)
+                    .addComponent(buttonSalahMc))
+                .addGap(33, 33, 33))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -176,13 +284,55 @@ private void radioReloadMcActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         Logger.getLogger(PanelStatistik.class.getName()).log(Level.SEVERE, null, ex);
     }
 }//GEN-LAST:event_radioReloadMcActionPerformed
+
+private void buttonBenarBsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBenarBsActionPerformed
+    try {
+        buttonBenarBsActionPerformed();
+    } catch (RemoteException ex) {
+        Logger.getLogger(PanelStatistik.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}//GEN-LAST:event_buttonBenarBsActionPerformed
+
+private void buttonSalahBsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSalahBsActionPerformed
+    try {
+        buttonSalahBsActionPerformed();
+    } catch (RemoteException ex) {
+        Logger.getLogger(PanelStatistik.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}//GEN-LAST:event_buttonSalahBsActionPerformed
+
+private void buttonBenarMcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBenarMcActionPerformed
+    try {
+        buttonBenarMcActionPerformed();
+    } catch (RemoteException ex) {
+        Logger.getLogger(PanelStatistik.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}//GEN-LAST:event_buttonBenarMcActionPerformed
+
+private void buttonSalahMcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSalahMcActionPerformed
+    try {
+        buttonSalahMcActionPerformed();
+    } catch (RemoteException ex) {
+        Logger.getLogger(PanelStatistik.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}//GEN-LAST:event_buttonSalahMcActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonBenarBs;
+    private javax.swing.JButton buttonBenarMc;
+    private javax.swing.JButton buttonSalahBs;
+    private javax.swing.JButton buttonSalahMc;
+    private javax.swing.JDialog dialogTabelSelectedBs;
+    private javax.swing.JDialog dialogTabelSelectedMc;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JButton radioReloadBs;
     private javax.swing.JButton radioReloadMc;
+    private javax.swing.JTable tabelSelectedBs;
+    private javax.swing.JTable tabelSelectedMc;
     private javax.swing.JTable tabelStatistikBs;
     private javax.swing.JTable tableStatistikMc;
     // End of variables declaration//GEN-END:variables
@@ -192,6 +342,54 @@ private void radioReloadMcActionPerformed(java.awt.event.ActionEvent evt) {//GEN
     private List<JawabanMc> listJawabanMc;
     private List<StatistikJawaban> listStatistikJawabanBs;
     private List<StatistikJawaban> listStatistikJawabanMc;
+
+    /**
+     * event event
+     * @throws RemoteException 
+     */
+    private void buttonBenarBsActionPerformed() throws RemoteException {
+        if (tabelStatistikBs.getSelectedRow() >= 0) {
+            StatistikJawaban sj = listStatistikJawabanBs.get(tabelStatistikBs.getSelectedRow());
+            listJawabanBs = bsPretestServiceImpl.findJawabanBss(sj.getIdSoal(), Jawab.B);
+            isiTableSelectedBs();
+            dialogTabelSelectedBs.setSize(500, 600);
+            dialogTabelSelectedBs.setLocationRelativeTo(this);
+            dialogTabelSelectedBs.setVisible(true);
+        }
+    }
+
+    private void buttonSalahBsActionPerformed() throws RemoteException {
+        if (tabelStatistikBs.getSelectedRow() >= 0) {
+            StatistikJawaban sj = listStatistikJawabanBs.get(tabelStatistikBs.getSelectedRow());
+            listJawabanBs = bsPretestServiceImpl.findJawabanBss(sj.getIdSoal(), Jawab.S);
+            isiTableSelectedBs();
+            dialogTabelSelectedBs.setSize(500, 600);
+            dialogTabelSelectedBs.setLocationRelativeTo(this);
+            dialogTabelSelectedBs.setVisible(true);
+        }
+    }
+
+    private void buttonBenarMcActionPerformed() throws RemoteException {
+        if (tableStatistikMc.getSelectedRow() >= 0) {
+            StatistikJawaban sj = listStatistikJawabanMc.get(tableStatistikMc.getSelectedRow());
+            listJawabanMc = mcPretestServiceImpl.findJawabanMcs(sj.getIdSoal(), Jawab.B);
+            isiTableSelectedMc();
+            dialogTabelSelectedMc.setSize(500, 600);
+            dialogTabelSelectedMc.setLocationRelativeTo(this);
+            dialogTabelSelectedMc.setVisible(true);
+        }
+    }
+
+    private void buttonSalahMcActionPerformed() throws RemoteException {
+        if (tableStatistikMc.getSelectedRow() >= 0) {
+            StatistikJawaban sj = listStatistikJawabanMc.get(tableStatistikMc.getSelectedRow());
+            listJawabanMc = mcPretestServiceImpl.findJawabanMcs(sj.getIdSoal(), Jawab.S);
+            isiTableSelectedMc();
+            dialogTabelSelectedMc.setSize(500, 600);
+            dialogTabelSelectedMc.setLocationRelativeTo(this);
+            dialogTabelSelectedMc.setVisible(true);
+        }
+    }
 
     private void reloadBs() throws RemoteException {
         listJawabanBs = bsPretestServiceImpl.findJawabanBss();
@@ -327,5 +525,31 @@ private void radioReloadMcActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         String titile[] = {"Praktikum", "Ke", "id Soal", "Benar (%)", "Salah (%)", "Jumlah Mahasiswa"};
         tableStatistikMc.setModel(new DefaultTableModel(data, titile));
         jScrollPane2.setViewportView(tableStatistikMc);
+    }
+
+    private void isiTableSelectedBs() {
+        Object data[][] = new Object[listJawabanBs.size()][2];
+        int row = 0;
+        for (JawabanBs jb : listJawabanBs) {
+            data[row][0] = jb.getMahasiswa().getNim();
+            data[row][1] = jb.getMahasiswa().getNama();
+            row++;
+        }
+        String title[] = {"Nim", "Nama"};
+        tabelSelectedBs.setModel(new DefaultTableModel(data, title));
+        jScrollPane3.setViewportView(tabelSelectedBs);
+    }
+
+    private void isiTableSelectedMc() {
+        Object data[][] = new Object[listJawabanMc.size()][2];
+        int row = 0;
+        for (JawabanMc jm : listJawabanMc) {
+            data[row][0] = jm.getMahasiswa().getNim();
+            data[row][1] = jm.getMahasiswa().getNama();
+            row++;
+        }
+        String title[] = {"Nim", "Nama"};
+        tabelSelectedMc.setModel(new DefaultTableModel(data, title));
+        jScrollPane5.setViewportView(tabelSelectedMc);
     }
 }
