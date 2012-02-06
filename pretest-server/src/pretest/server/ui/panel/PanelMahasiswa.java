@@ -10,15 +10,24 @@
  */
 package pretest.server.ui.panel;
 
+import java.io.File;
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
 import pretest.entity.Mahasiswa;
 import pretest.server.PretestServer;
 import pretest.server.impl.MahasiswaServiceImpl;
@@ -33,6 +42,10 @@ public class PanelMahasiswa extends javax.swing.JPanel {
     /** Creates new form PanelMahasiswa */
     public PanelMahasiswa() throws RemoteException {
         initComponents();
+
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("All Files","xls", "xlsx", "ods");
+        choser.addChoosableFileFilter(filter);
+
         mahasiswaService = new MahasiswaServiceImpl();
         mahasiswaService.setEm(PretestServer.getEntityManager());
         statusAwal();
@@ -69,6 +82,8 @@ public class PanelMahasiswa extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         buttonReload = new javax.swing.JButton();
+        textBrowse = new javax.swing.JTextField();
+        buttonBrowse = new javax.swing.JButton();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Tabel Mahasiswa"));
 
@@ -98,10 +113,10 @@ public class PanelMahasiswa extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 294, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 288, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -174,6 +189,13 @@ public class PanelMahasiswa extends javax.swing.JPanel {
             }
         });
 
+        buttonBrowse.setText("browse file");
+        buttonBrowse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonBrowseActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -182,30 +204,36 @@ public class PanelMahasiswa extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(buttonHapus, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addComponent(buttonUbah, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(buttonReload, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(textBrowse, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(buttonUbah, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(buttonReload, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(buttonSimpan, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(buttonHapus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(buttonBrowse, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(textBrowse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonBrowse))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(buttonReload)
                             .addComponent(buttonSimpan))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonUbah)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonHapus)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonUbah)
+                            .addComponent(buttonHapus)))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -240,7 +268,11 @@ public class PanelMahasiswa extends javax.swing.JPanel {
         statusAwal();
     }//GEN-LAST:event_buttonReloadActionPerformed
 
+private void buttonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBrowseActionPerformed
+    buttonBrowseActionPerformed();
+}//GEN-LAST:event_buttonBrowseActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonBrowse;
     private javax.swing.JButton buttonHapus;
     private javax.swing.JButton buttonReload;
     private javax.swing.JButton buttonSimpan;
@@ -253,6 +285,7 @@ public class PanelMahasiswa extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableMahasiswa;
+    private javax.swing.JTextField textBrowse;
     private javax.swing.JTextField textNama;
     private javax.swing.JTextField textNim;
     private javax.swing.JPasswordField textPassword;
@@ -260,6 +293,9 @@ public class PanelMahasiswa extends javax.swing.JPanel {
     private Mahasiswa mahasiswa;
     private List<Mahasiswa> mahasiswaList;
     private MahasiswaServiceImpl mahasiswaService;
+    JFileChooser choser = new JFileChooser();
+    File file;
+    Workbook w;
 
     private void statusAwal() {
         clearText();
@@ -267,6 +303,7 @@ public class PanelMahasiswa extends javax.swing.JPanel {
         isiTable();
         buttonHapus.setEnabled(false);
         buttonUbah.setEnabled(false);
+        buttonSimpan.setText("Simpan");
         buttonSimpan.setEnabled(true);
     }
 
@@ -297,6 +334,7 @@ public class PanelMahasiswa extends javax.swing.JPanel {
         textNama.setText("");
         textNim.setText("");
         textPassword.setText("");
+        textBrowse.setText("");
     }
 
     private void isiText() {
@@ -323,7 +361,46 @@ public class PanelMahasiswa extends javax.swing.JPanel {
     }
 
     private void buttonSimpanActionPerformed() {
-        if (tableMahasiswa.getSelectedRow() >= 0) {
+        if (buttonSimpan.getText().equals("Upload")) {
+            try {
+                w = Workbook.getWorkbook(file);
+                String nim = null;
+                String nama = null;
+                String password = null;
+
+                Sheet sheet = w.getSheet(0);
+                for (int j = 0; j < sheet.getRows(); j++) {
+                    for (int i = 0; i < sheet.getColumns(); i++) {
+                        Cell cell = sheet.getCell(i, j);
+                        if (j != 0) {
+                            if (i == 0) {
+                                nim = cell.getContents();
+                            }
+                            if (i == 1) {
+                                nama = cell.getContents();
+                            }
+                            if (i == 2) {
+                                password = cell.getContents();
+                            }
+
+                        }
+                    }
+                    if (j != 0) {
+                        mahasiswa = new Mahasiswa();
+                        mahasiswa.setNim(nim);
+                        mahasiswa.setNama(nama);
+                        mahasiswa.setPassword(password);
+                        mahasiswaService.save(mahasiswa);
+                    }
+                }
+                statusAwal();
+            } catch (IOException ex) {
+                Logger.getLogger(PanelMahasiswa.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (BiffException ex) {
+                Logger.getLogger(PanelMahasiswa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else if (tableMahasiswa.getSelectedRow() >= 0) {
             clearText();
         } else if (cekText()) {
             try {
@@ -358,7 +435,7 @@ public class PanelMahasiswa extends javax.swing.JPanel {
     }
 
     private void buttonHapusActionPerformed() {
-        if(tableMahasiswa.getSelectedRow()>=0){
+        if (tableMahasiswa.getSelectedRow() >= 0) {
             try {
                 mahasiswa = mahasiswaList.get(tableMahasiswa.getSelectedRow());
                 mahasiswaService.delete(mahasiswa);
@@ -368,6 +445,15 @@ public class PanelMahasiswa extends javax.swing.JPanel {
             }
         }
         statusAwal();
+    }
+
+    private void buttonBrowseActionPerformed() {
+        int ren = choser.showOpenDialog(this);
+        if (ren == JFileChooser.APPROVE_OPTION) {
+            file = choser.getSelectedFile();
+            textBrowse.setText(file.getAbsolutePath());
+            buttonSimpan.setText("Upload");
+        }
     }
 
     public Mahasiswa getMahasiswa() {
@@ -385,6 +471,4 @@ public class PanelMahasiswa extends javax.swing.JPanel {
     public void setMahasiswaList(List<Mahasiswa> mahasiswaList) {
         this.mahasiswaList = mahasiswaList;
     }
-
-    
 }
