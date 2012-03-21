@@ -34,14 +34,20 @@ public class MahasiswaServiceImpl extends UnicastRemoteObject implements Mahasis
     }
 
     @Override
-    public void save(Mahasiswa mahasiswa) throws RemoteException {
-        em.getTransaction().begin();
-        if (mahasiswa.getId() == null) {
-            em.persist(mahasiswa);
-        } else {
-            em.merge(mahasiswa);
+    public boolean save(Mahasiswa mahasiswa) throws RemoteException {
+        try {
+            em.getTransaction().begin();
+            if (mahasiswa.getId() == null) {
+                em.persist(mahasiswa);
+            } else {
+                em.merge(mahasiswa);
+            }
+            em.getTransaction().commit();
+        } catch (RollbackException ex) {
+            return false;
+
         }
-        em.getTransaction().commit();
+        return true;
     }
 
     @Override

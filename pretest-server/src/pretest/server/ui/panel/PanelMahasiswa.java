@@ -408,8 +408,12 @@ private void buttonBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                 mahasiswa.setNim(textNim.getText().trim());
                 mahasiswa.setNama(textNama.getText().trim());
                 mahasiswa.setPassword(textPassword.getText().trim());
-                mahasiswaService.save(mahasiswa);
-                statusAwal();
+                if (mahasiswaService.save(mahasiswa)) {
+                    statusAwal();
+                } else {
+                    JOptionPane.showMessageDialog(this, "nim sudah terdaftar.");
+                    statusAwal();
+                }
             } catch (RemoteException ex) {
                 Logger.getLogger(PanelMahasiswa.class.getName()).log(Level.SEVERE, null, ex);
             }

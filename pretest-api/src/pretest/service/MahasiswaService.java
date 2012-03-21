@@ -15,7 +15,7 @@ import pretest.entity.Setting;
  */
 public interface MahasiswaService extends Remote {
 
-    public void save(Mahasiswa mahasiswa) throws RemoteException;
+    public boolean save(Mahasiswa mahasiswa) throws RemoteException;
 
     public void delete(Mahasiswa mahasiswa) throws RemoteException;
 

@@ -24,7 +24,7 @@ public class Mahasiswa implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "mahasiswa_id")
     private Long id;
-    @Column(name = "nim", nullable = false, length = 15)
+    @Column(name = "nim", nullable = false, length = 15,unique=true)
     private String nim;
     @Column(name = "nama", nullable = false, length = 100)
     private String nama;
